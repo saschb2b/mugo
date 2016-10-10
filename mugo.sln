@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
+# Visual Studio 2012
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lv1", "lv1\lv1.csproj", "{0A1E9C18-CE91-4A61-A246-DE28A7510AA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mugo", "mugo\mugo.csproj", "{0A1E9C18-CE91-4A61-A246-DE28A7510AA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

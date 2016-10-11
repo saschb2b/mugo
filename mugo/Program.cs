@@ -15,6 +15,7 @@ using cgimin.engine.object3d;
 using cgimin.engine.texture;
 using cgimin.engine.material.simpletexture;
 using cgimin.engine.material.wobble1;
+using System.Diagnostics;
 
 #endregion --- Using Directives ---
 
@@ -45,22 +46,30 @@ namespace Examples.Tutorial
         {
             base.OnLoad(e);
 
-			minecart = new ObjLoaderObject3D("data/objects/cart.obj");
-			texture = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
-			tunnel = new TunnelObject3D();
+            //minecart = new ObjLoaderObject3D("data/objects/cart.obj");
+            texture = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
+            tunnel = new TunnelObject3D();
 
             simpleTextureMaterial = new SimpleTextureMaterial();
-//            wobble1Material = new Wobble1Material();
-//            wobble2Material = new Wobble2Material();
-//
+            //            wobble1Material = new Wobble1Material();
+            //            wobble2Material = new Wobble2Material();
+            //
             GL.Enable(EnableCap.DepthTest);
+
+            GoToStartPosition();
         }
- 
+
+        private static void GoToStartPosition()
+        {
+            Matrix4 lookat = Matrix4.LookAt(1f, 0.5f, 1.0f, 1f, 0.5f, -10, 0, 1, 0);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadMatrix(ref lookat);
+        }
 
         protected override void OnUnload(EventArgs e)
         {
 			tunnel.UnLoad();
-			minecart.UnLoad ();
+			//minecart.UnLoad ();
         }
 
        
@@ -93,18 +102,29 @@ namespace Examples.Tutorial
             GL.Clear( ClearBufferMask.ColorBufferBit |
                        ClearBufferMask.DepthBufferBit);
 
-            Matrix4 lookat = Matrix4.LookAt(1f, 0.5f, 1.0f, 1f, 0.5f, -10, 0, 1, 0);
-
+            Matrix4 lookat;
             GL.MatrixMode(MatrixMode.Modelview);
+            GL.GetFloat(GetPName.ModelviewMatrix, out lookat);
 
-            GL.LoadMatrix(ref lookat);
+            var z = lookat.ExtractTranslation().Z;
 
-      //      angle += (float)e.Time;
-//            GL.Rotate(angle * 4, 0f, 1.0f, 0.0f);
-//            GL.Rotate(angle * 5, 0.0f, 1.0f, 0.0f);
-//            GL.Rotate(angle * 5, 0.0f, 0.0f, 1.0f);
+            Debug.WriteLine("{0}", z);
 
-			simpleTextureMaterial.draw(tunnel, texture);
+            if (z >= 8f)
+            {
+                GoToStartPosition();
+            }
+            else
+            {
+                GL.Translate(x: 0.0f, y: 0.0f, z: 0.05f); 
+            }
+
+            //      angle += (float)e.Time;
+            //            GL.Rotate(angle * 4, 0f, 1.0f, 0.0f);
+            //            GL.Rotate(angle * 5, 0.0f, 1.0f, 0.0f);
+            //            GL.Rotate(angle * 5, 0.0f, 0.0f, 1.0f);
+
+            simpleTextureMaterial.draw(tunnel, texture);
 			//simpleTextureMaterial.draw(minecart, 0);
 
             SwapBuffers();

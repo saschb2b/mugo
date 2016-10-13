@@ -94,13 +94,6 @@ namespace Examples.Tutorial
                     WindowState = WindowState.Fullscreen;
                 else
                     WindowState = WindowState.Normal;
-        }
-
-
-        protected override void OnRenderFrame(FrameEventArgs e)
-        {
-            GL.Clear( ClearBufferMask.ColorBufferBit |
-                       ClearBufferMask.DepthBufferBit);
 
             Matrix4 lookat;
             GL.MatrixMode(MatrixMode.Modelview);
@@ -116,8 +109,15 @@ namespace Examples.Tutorial
             }
             else
             {
-                GL.Translate(x: 0.0f, y: 0.0f, z: 0.05f); 
+                GL.Translate(x: 0.0f, y: 0.0f, z: 0.05f);
             }
+        }
+
+
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            GL.Clear( ClearBufferMask.ColorBufferBit |
+                       ClearBufferMask.DepthBufferBit);
 
             //      angle += (float)e.Time;
             //            GL.Rotate(angle * 4, 0f, 1.0f, 0.0f);

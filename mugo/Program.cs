@@ -37,6 +37,8 @@ namespace Examples.Tutorial
 		private Wobble2Material wobble2Material;
 		private TunnelObject3D tunnel;
 
+		private float zMover = 0.0f;
+
 		public CubeExample()
 			: base(800, 600, GraphicsMode.Default)
 		{
@@ -103,6 +105,12 @@ namespace Examples.Tutorial
 			else
 				WindowState = WindowState.Normal;
 
+			if (zMover <= -10.0f) {
+				zMover = 0.0f;
+			} else {
+				zMover -= 0.1f;
+			}
+			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.0f + zMover), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 //			Matrix4 lookat;
 //			GL.MatrixMode(MatrixMode.Modelview);
 //			GL.GetFloat(GetPName.ModelviewMatrix, out lookat);

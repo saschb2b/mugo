@@ -1,0 +1,3 @@
+[submodule "cgimin"]
+	path = cgimin
+	url = https://bitbucket.org/macawstudios/cgimin.git

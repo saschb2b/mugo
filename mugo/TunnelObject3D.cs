@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using OpenTK;
+using Engine.cgimin.object3d;
 
-namespace cgimin.engine.object3d
+namespace Examples.Tutorial
 {
-	class TunnelObject3D : BaseObject3D
+    class TunnelObject3D : BaseObject3D
 	{
 		public TunnelObject3D()
 		{

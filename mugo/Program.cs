@@ -2,29 +2,28 @@
 // This code was written for the OpenTK library and has been released
 // to the Public Domain.
 // It is provided "as is" without express or implied warranty of any kind.
-using cgimin.engine.camera;
 
 #region --- Using Directives ---
 
 using System;
-using System.IO;
 
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using cgimin.engine.object3d;
-using cgimin.engine.texture;
-using cgimin.engine.material.simpletexture;
-using cgimin.engine.material.wobble1;
-using System.Diagnostics;
+using Engine.cgimin.object3d;
+using Engine.cgimin.material.simpletexture;
+using Engine.cgimin.camera;
+using Engine.cgimin.material.wobble2;
+using Engine.cgimin.material.wobble1;
+using Engine.cgimin.texture;
 
 #endregion --- Using Directives ---
 
 namespace Examples.Tutorial
 {
-	
- 
-	public class CubeExample : GameWindow
+
+
+    public class CubeExample : GameWindow
 	{
 
 		static float angle = 0.0f;

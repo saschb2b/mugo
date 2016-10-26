@@ -25,15 +25,11 @@ namespace Examples.Tutorial
 
     public class CubeExample : GameWindow
 	{
-
-		static float angle = 0.0f;
-
-		private ObjLoaderObject3D minecart;
-		private int texture;
+        private PlayerModel player;
+        private int texture;
+        private Matrix4 initialPlayerTransformation;
 
 		private SimpleTextureMaterial simpleTextureMaterial;
-		private Wobble1Material wobble1Material;
-		private Wobble2Material wobble2Material;
 		private TunnelObject3D tunnel;
 
 		private float zMover = 0.0f;
@@ -52,33 +48,23 @@ namespace Examples.Tutorial
 			Camera.Init();
 			Camera.SetWidthHeightFov(800, 600, 60);
 
-			//minecart = new ObjLoaderObject3D("data/objects/cart.obj");
-			texture = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
+            player = new PlayerModel();
+            initialPlayerTransformation = player.Transformation;
+            texture = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
 			tunnel = new TunnelObject3D();
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
-			//            wobble1Material = new Wobble1Material();
-			//            wobble2Material = new Wobble2Material();
-			//
-			GL.Enable(EnableCap.DepthTest);
+
+            GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 
-			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.0f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
-
-			//GoToStartPosition();
-		}
-
-		private static void GoToStartPosition()
-		{
-			Matrix4 lookat = Matrix4.LookAt(1f, 0.5f, 1.0f, 1f, 0.5f, -10, 0, 1, 0);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadMatrix(ref lookat);
+			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
 
 		protected override void OnUnload(EventArgs e)
 		{
 			tunnel.UnLoad();
-			//minecart.UnLoad ();
+            player.UnLoad();
 		}
 
        
@@ -104,26 +90,21 @@ namespace Examples.Tutorial
 			else
 				WindowState = WindowState.Normal;
 
-			if (zMover <= -10.0f) {
-				zMover = 0.0f;
-			} else {
-				zMover -= 0.1f;
-			}
-			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.0f + zMover), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
-//			Matrix4 lookat;
-//			GL.MatrixMode(MatrixMode.Modelview);
-//			GL.GetFloat(GetPName.ModelviewMatrix, out lookat);
-//
-//			var z = lookat.ExtractTranslation().Z;
-//
-//			Debug.WriteLine("{0}", z);
-//
-//			if (z >= 8f) {
-//				GoToStartPosition();
-//			} else {
-//				GL.Translate(x: 0.0f, y: 0.0f, z: 0.05f);
-//			}
-		}
+            const float step = 0.1f;
+
+            if (zMover <= -10.0f)
+            {
+                zMover = 0.0f;
+                player.Transformation = initialPlayerTransformation;
+            }
+            else
+            {
+                zMover -= step;
+            }
+
+            Camera.SetLookAt(new Vector3(1f, 0.5f, 1.0f + zMover), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
+            player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+        }
 
 
 		protected override void OnRenderFrame(FrameEventArgs e)
@@ -131,15 +112,10 @@ namespace Examples.Tutorial
 			GL.Clear(ClearBufferMask.ColorBufferBit |
 			ClearBufferMask.DepthBufferBit);
 
-			//      angle += (float)e.Time;
-			//            GL.Rotate(angle * 4, 0f, 1.0f, 0.0f);
-			//            GL.Rotate(angle * 5, 0.0f, 1.0f, 0.0f);
-			//            GL.Rotate(angle * 5, 0.0f, 0.0f, 1.0f);
+            simpleTextureMaterial.Draw(tunnel, texture);
+            simpleTextureMaterial.Draw(player, player.TextureId);
 
-			simpleTextureMaterial.Draw(tunnel, texture);
-			//simpleTextureMaterial.draw(minecart, 0);
-
-			SwapBuffers();
+            SwapBuffers();
 		}
 
         

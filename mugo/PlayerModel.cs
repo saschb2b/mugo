@@ -1,9 +1,9 @@
-﻿using Engine.cgimin.object3d;
+﻿using System;
+using Engine.cgimin.object3d;
 using Engine.cgimin.texture;
 using OpenTK;
-using System;
 
-namespace Examples.Tutorial
+namespace Mugo
 {
     class PlayerModel : ObjLoaderObject3D
     {

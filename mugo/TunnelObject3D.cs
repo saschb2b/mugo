@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using OpenTK;
 using Engine.cgimin.object3d;
+using OpenTK;
 
-namespace Examples.Tutorial
+namespace Mugo
 {
     class TunnelObject3D : BaseObject3D
 	{

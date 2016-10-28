@@ -7,8 +7,8 @@
     <ProjectGuid>{0A1E9C18-CE91-4A61-A246-DE28A7510AA2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>lv1</RootNamespace>
-    <AssemblyName>lv1</AssemblyName>
+    <RootNamespace>Mugo</RootNamespace>
+    <AssemblyName>Mugo</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -6,20 +6,16 @@
 #region --- Using Directives ---
 
 using System;
-
+using Engine.cgimin.camera;
+using Engine.cgimin.material.simpletexture;
+using Engine.cgimin.texture;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using Engine.cgimin.object3d;
-using Engine.cgimin.material.simpletexture;
-using Engine.cgimin.camera;
-using Engine.cgimin.material.wobble2;
-using Engine.cgimin.material.wobble1;
-using Engine.cgimin.texture;
 
 #endregion --- Using Directives ---
 
-namespace Examples.Tutorial
+namespace Mugo
 {
 
 
@@ -38,9 +34,7 @@ namespace Examples.Tutorial
 			: base(800, 600, GraphicsMode.Default)
 		{
 		}
-
        
-        
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -66,7 +60,6 @@ namespace Examples.Tutorial
 			tunnel.UnLoad();
             player.UnLoad();
 		}
-
        
 		protected override void OnResize(EventArgs e)
 		{
@@ -77,7 +70,6 @@ namespace Examples.Tutorial
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadMatrix(ref perpective);
 		}
-
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
@@ -106,7 +98,6 @@ namespace Examples.Tutorial
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
         }
 
-
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit |
@@ -117,7 +108,6 @@ namespace Examples.Tutorial
 
             SwapBuffers();
 		}
-
         
 		[STAThread]
 		public static void Main()
@@ -129,7 +119,5 @@ namespace Examples.Tutorial
 				example.Run(30.0, 0.0);
 			}
 		}
-
-      
 	}
 }

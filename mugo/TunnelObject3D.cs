@@ -15,14 +15,14 @@ namespace Mugo
 
 			//left
 			addTriangle(
-				new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 1, -10), 
+				new Vector3(0, 1, -10), new Vector3(0, 1, 0), new Vector3(0, 0, 0), 
 				new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 1),
-				new Vector2(0, 1), new Vector2(0, 0), new Vector2(1, 0));
+				new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1));
 
 			addTriangle(
-				new Vector3(0, 1, -10), new Vector3(0, 0, -10), new Vector3(0, 0, 0), 
+				new Vector3(0, 0, 0), new Vector3(0, 0, -10), new Vector3(0, 1, -10), 
 				new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 1),
-				new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1));
+				new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0));
 
 			//right
 			addTriangle(
@@ -37,9 +37,9 @@ namespace Mugo
 
 			//bottom
 			addTriangle(
-				new Vector3(0, 0, 0), new Vector3(0, 0, -10), new Vector3(2, 0, 0), 
+				new Vector3(2, 0, 0), new Vector3(0, 0, -10), new Vector3(0, 0, 0), 
 				new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 1),
-				new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1));
+				new Vector2(0, 1), new Vector2(1, 0), new Vector2(0, 0));
 
 			addTriangle(
 				new Vector3(2, 0, 0), new Vector3(2, 0, -10), new Vector3(0, 0, -10), 
@@ -53,9 +53,9 @@ namespace Mugo
 				new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1));
 
 			addTriangle(
-				new Vector3(2, 1, 0), new Vector3(2, 1, -10), new Vector3(0, 1, -10), 
+				new Vector3(0, 1, -10), new Vector3(2, 1, -10), new Vector3(2, 1, 0), 
 				new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 1),
-				new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0));
+				new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1));
 
 			CreateVAO();
 		}

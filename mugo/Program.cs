@@ -49,6 +49,9 @@ namespace Mugo
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
 
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(CullFaceMode.Front);
+
             GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 

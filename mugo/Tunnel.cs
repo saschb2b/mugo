@@ -1,28 +1,43 @@
 ﻿using System;
 using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.material;
+using OpenTK;
+using System.Collections.Generic;
 
 namespace Mugo
 {
 	public class Tunnel
 	{
-		private TunnelSegment segment;
-		private SimpleTextureMaterial material;
+		private readonly List<TunnelSegment> segments = new List<TunnelSegment>();
+		private readonly SimpleTextureMaterial material;
 
 		public Tunnel()
 		{
-			segment = new TunnelSegment();
+			segments = new List<TunnelSegment>() {
+				new TunnelSegment(),
+				new TunnelSegment(),
+				new TunnelSegment()
+			};
+
 			material = new SimpleTextureMaterial();
+
+			for (int i = 0; i < segments.Count; i++) {
+				segments[i].Transformation *= Matrix4.CreateTranslation(0, 0, (i - 1) * -TunnelSegment.Depth);
+			}
 		}
 
 		public void Draw()
 		{
-			material.Draw(segment, segment.TextureId);
+			foreach(var segment in segments) {
+				material.Draw(segment, segment.TextureId);
+			}
 		}
 
 		public void UnLoad() 
 		{
-			segment.UnLoad();
+			foreach(var segment in segments) {
+				segment.UnLoad();
+			}
 		}
 	}
 }

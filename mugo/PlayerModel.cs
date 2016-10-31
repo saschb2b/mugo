@@ -13,9 +13,9 @@ namespace Mugo
         public PlayerModel() : base(objFilePath)
         {
             TextureId = TextureManager.LoadTexture(texturePath);
-            Transformation *= Matrix4.CreateScale(0.4f);
+            Transformation *= Matrix4.CreateScale(0.6f);
             Transformation *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(180));
-            Transformation *= Matrix4.CreateTranslation(1, 0.4f, -0.5f);
+            Transformation *= Matrix4.CreateTranslation(1.07f, 0.6f, -0.8f);
         }
 
         public int TextureId { get; private set; }

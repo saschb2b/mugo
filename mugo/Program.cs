@@ -21,8 +21,6 @@ namespace Mugo
 	{
         private PlayerModel player;
         private CartModel cart;
-        private Matrix4 initialPlayerTransformation;
-        private Matrix4 initialCartTransformation;
 
         private SimpleTextureMaterial simpleTextureMaterial;
 		private Tunnel tunnel;
@@ -42,10 +40,8 @@ namespace Mugo
 			Camera.SetWidthHeightFov(800, 600, 60);
 
             player = new PlayerModel();
-            initialPlayerTransformation = player.Transformation;
 
-            cart = new CartModel();
-            initialCartTransformation = cart.Transformation;
+			cart = new CartModel();
 
 			tunnel = new Tunnel();
 
@@ -96,9 +92,9 @@ namespace Mugo
             if (zMover <= -10.0f)
             {
                 zMover = 0.0f;
-                player.Transformation = initialPlayerTransformation;
-                cart.Transformation = initialCartTransformation;
-            }
+				player.ResetTransformation();
+				cart.ResetTransformation();
+			}
 
 			zMover -= step;
 

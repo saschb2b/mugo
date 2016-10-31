@@ -16,8 +16,17 @@ namespace Mugo
             Transformation *= Matrix4.CreateScale(0.4f);
             Transformation *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(90));
             Transformation *= Matrix4.CreateTranslation(1.07f, 0.1f, -0.5f);
-        }
 
-        public int TextureId { get; private set; }
+			DefaultTransformation = Transformation;
+		}
+
+		public int TextureId { get; private set; }
+
+		public Matrix4 DefaultTransformation { get; private set; }
+
+		public void ResetTransformation()
+		{
+			Transformation = DefaultTransformation;
+		}
     }
 }

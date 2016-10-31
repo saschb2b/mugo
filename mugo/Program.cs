@@ -53,9 +53,6 @@ namespace Mugo
             GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 
-			GL.Enable(EnableCap.CullFace);
-			GL.CullFace(CullFaceMode.Front);
-
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
 

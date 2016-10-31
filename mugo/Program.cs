@@ -22,10 +22,12 @@ namespace Mugo
     public class CubeExample : GameWindow
 	{
         private PlayerModel player;
+        private CartModel cart;
         private int texture;
         private Matrix4 initialPlayerTransformation;
+        private Matrix4 initialCartTransformation;
 
-		private SimpleTextureMaterial simpleTextureMaterial;
+        private SimpleTextureMaterial simpleTextureMaterial;
 		private TunnelObject3D tunnel;
 
 		private float zMover = 0.0f;
@@ -44,6 +46,10 @@ namespace Mugo
 
             player = new PlayerModel();
             initialPlayerTransformation = player.Transformation;
+
+            cart = new CartModel();
+            initialCartTransformation = cart.Transformation;
+
             texture = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
 			tunnel = new TunnelObject3D();
 
@@ -62,6 +68,7 @@ namespace Mugo
 		{
 			tunnel.UnLoad();
             player.UnLoad();
+            cart.UnLoad();
 		}
        
 		protected override void OnResize(EventArgs e)
@@ -91,23 +98,27 @@ namespace Mugo
             {
                 zMover = 0.0f;
                 player.Transformation = initialPlayerTransformation;
+                cart.Transformation = initialCartTransformation;
             }
             else
             {
                 zMover -= step;
             }
 
-            Camera.SetLookAt(new Vector3(1f, 0.5f, 1.0f + zMover), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
+            Camera.SetLookAt(new Vector3(1f, 2.0f, 2.0f + zMover), new Vector3(1f, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+            cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+
         }
 
-		protected override void OnRenderFrame(FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit |
 			ClearBufferMask.DepthBufferBit);
 
             simpleTextureMaterial.Draw(tunnel, texture);
             simpleTextureMaterial.Draw(player, player.TextureId);
+            simpleTextureMaterial.Draw(cart, cart.TextureId);
 
             SwapBuffers();
 		}

@@ -25,7 +25,7 @@ namespace Mugo
         private Matrix4 initialCartTransformation;
 
         private SimpleTextureMaterial simpleTextureMaterial;
-		private TunnelSegment tunnel;
+		private Tunnel tunnel;
 
 		private float zMover = 0.0f;
 
@@ -47,7 +47,7 @@ namespace Mugo
             cart = new CartModel();
             initialCartTransformation = cart.Transformation;
 
-			tunnel = new TunnelSegment();
+			tunnel = new Tunnel();
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
 
@@ -113,9 +113,9 @@ namespace Mugo
         protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit |
-			ClearBufferMask.DepthBufferBit);
+				ClearBufferMask.DepthBufferBit);
 
-			simpleTextureMaterial.Draw(tunnel, tunnel.TextureId);
+			tunnel.Draw();
             simpleTextureMaterial.Draw(player, player.TextureId);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 

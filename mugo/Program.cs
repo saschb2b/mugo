@@ -99,10 +99,8 @@ namespace Mugo
                 player.Transformation = initialPlayerTransformation;
                 cart.Transformation = initialCartTransformation;
             }
-            else
-            {
-                zMover -= step;
-            }
+
+			zMover -= step;
 
             Camera.SetLookAt(new Vector3(1f, 2.0f, 3.0f + zMover), new Vector3(1f, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);

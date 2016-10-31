@@ -8,7 +8,7 @@ namespace Mugo
 {
 	public class Tunnel
 	{
-		private readonly List<TunnelSegment> segments = new List<TunnelSegment>();
+		private readonly List<TunnelSegment> segments;
 		private readonly SimpleTextureMaterial material;
 
 		public Tunnel()

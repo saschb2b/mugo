@@ -13,7 +13,7 @@ namespace Mugo
 
 		public TunnelSegment()
 		{
-			TextureId = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
+			TextureId = TextureManager.LoadTexture("data/textures/textures.jpg");
 
 			Positions = new List<Vector3>();
 			UVs = new List<Vector2>();
@@ -24,45 +24,45 @@ namespace Mugo
 			addTriangle(
 				new Vector3(0, Height, -Depth), new Vector3(0, Height, 0), new Vector3(0, 0, 0), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1));
+				new Vector2(0.5f, 0.4f), new Vector2(0, 0.4f), new Vector2(0f, 0.7f));
 
 			addTriangle(
 				new Vector3(0, 0, 0), new Vector3(0, 0, -Depth), new Vector3(0, Height, -Depth), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0));
+				new Vector2(0f, 0.7f), new Vector2(0.5f, 0.7f), new Vector2(0.5f, 0.4f));
 
 			//right
 			addTriangle(
 				new Vector3(Width, 0, 0), new Vector3(Width, Height, 0), new Vector3(Width, Height, -Depth), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(0, 1), new Vector2(0, 0), new Vector2(1, 0));
+				new Vector2(0f, 0.7f), new Vector2(0f, 0.4f), new Vector2(0.5f, 0.4f));
 
 			addTriangle(
 				new Vector3(Width, Height, -Depth), new Vector3(Width, 0, -Depth), new Vector3(Width, 0, 0), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1));
+				new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.7f), new Vector2(0f, 0.7f));
 
 			//bottom
 			addTriangle(
 				new Vector3(Width, 0, 0), new Vector3(0, 0, -Depth), new Vector3(0, 0, 0), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(0, 1), new Vector2(1, 0), new Vector2(0, 0));
+				new Vector2(0.3f, 0.4f), new Vector2(0, 0), new Vector2(0, 0.4f));
 
 			addTriangle(
 				new Vector3(Width, 0, 0), new Vector3(Width, 0, -Depth), new Vector3(0, 0, -Depth), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0));
+				new Vector2(0.3f, 0.4f),new Vector2(0.3f, 0f), new Vector2(0f, 0f));
 
 			//top
 			addTriangle(
 				new Vector3(0, Height, 0), new Vector3(0, Height, -Depth), new Vector3(Width, Height, 0), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1));
+				new Vector2(0f, 0.4f), new Vector2(0.5f, 0.4f), new Vector2(0f, 0.7f));
 
 			addTriangle(
 				new Vector3(0, Height, -Depth), new Vector3(Width, Height, -Depth), new Vector3(Width, Height, 0), 
 				Vector3.One, Vector3.One, Vector3.One,
-				new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1));
+				new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.7f), new Vector2(0f, 0.7f));
 
 			CreateVAO();
 		}

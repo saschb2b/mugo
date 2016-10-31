@@ -71,8 +71,12 @@
     <None Include="data\textures\road_rails_0039_01_s.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="data\textures\textures.jpg" />
-    <None Include="data\textures\textures_nm.jpg" />
+    <None Include="data\textures\textures.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="data\textures\textures_nm.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -17,7 +17,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Mugo
 {
-    public class CubeExample : GameWindow
+    public class MugoGame : GameWindow
 	{
         private PlayerModel player;
         private CartModel cart;
@@ -29,7 +29,7 @@ namespace Mugo
 
 		private float zMover = 0.0f;
 
-		public CubeExample()
+		public MugoGame()
 			: base(800, 600, GraphicsMode.Default)
 		{
 		}
@@ -125,7 +125,7 @@ namespace Mugo
 		[STAThread]
 		public static void Main()
 		{
-			using (CubeExample example = new CubeExample()) {
+			using (MugoGame example = new MugoGame()) {
 				// Get the title and category  of this example using reflection.
 				//ExampleAttribute info = ((ExampleAttribute)example.GetType().GetCustomAttributes(false)[0]);
 				//example.Title = String.Format("OpenTK | {0} {1}: {2}", info.Category, info.Difficulty, info.Title);

@@ -17,18 +17,15 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Mugo
 {
-
-
     public class CubeExample : GameWindow
 	{
         private PlayerModel player;
         private CartModel cart;
-        private int texture;
         private Matrix4 initialPlayerTransformation;
         private Matrix4 initialCartTransformation;
 
         private SimpleTextureMaterial simpleTextureMaterial;
-		private TunnelObject3D tunnel;
+		private TunnelSegment tunnel;
 
 		private float zMover = 0.0f;
 
@@ -50,8 +47,7 @@ namespace Mugo
             cart = new CartModel();
             initialCartTransformation = cart.Transformation;
 
-            texture = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
-			tunnel = new TunnelObject3D();
+			tunnel = new TunnelSegment();
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
 
@@ -60,6 +56,9 @@ namespace Mugo
 
             GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+
+			GL.Enable(EnableCap.CullFace);
+			GL.CullFace(CullFaceMode.Front);
 
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -87,10 +86,10 @@ namespace Mugo
 				this.Exit();
 
 			if (Keyboard[OpenTK.Input.Key.F11])
-			if (WindowState != WindowState.Fullscreen)
-				WindowState = WindowState.Fullscreen;
-			else
-				WindowState = WindowState.Normal;
+				if (WindowState != WindowState.Fullscreen)
+					WindowState = WindowState.Fullscreen;
+				else
+					WindowState = WindowState.Normal;
 
             const float step = 0.1f;
 
@@ -116,7 +115,7 @@ namespace Mugo
 			GL.Clear(ClearBufferMask.ColorBufferBit |
 			ClearBufferMask.DepthBufferBit);
 
-            simpleTextureMaterial.Draw(tunnel, texture);
+			simpleTextureMaterial.Draw(tunnel, tunnel.TextureId);
             simpleTextureMaterial.Draw(player, player.TextureId);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 

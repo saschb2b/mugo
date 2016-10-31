@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using Engine.cgimin.object3d;
+using Engine.cgimin.texture;
 using OpenTK;
 
 namespace Mugo
 {
-    class TunnelObject3D : BaseObject3D
+    class TunnelSegment : BaseObject3D
 	{
-		public TunnelObject3D()
+		public TunnelSegment()
 		{
+			TextureId = TextureManager.LoadTexture("data/textures/road_rails_0039_01_s.png");
+
 			Positions = new List<Vector3>();
 			UVs = new List<Vector2>();
 			Normals = new List<Vector3>();
@@ -61,5 +64,7 @@ namespace Mugo
 
 			CreateVAO();
 		}
+
+		public int TextureId { get; private set; }
 	}
 }

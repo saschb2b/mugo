@@ -51,7 +51,7 @@
     <Compile Include="PlayerModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TunnelObject3D.cs" />
+    <Compile Include="TunnelSegment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

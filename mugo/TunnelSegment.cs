@@ -14,15 +14,7 @@ namespace Mugo
 
 		public TunnelSegment()
         {
-            textureId = TextureManager.LoadTexture("data/textures/textures.jpg");
-            normalTextureID = TextureManager.LoadTexture("data/textures/textures_nm.jpg");
-
-            Positions = new List<Vector3>();
-            Normals = new List<Vector3>();
-            UVs = new List<Vector2>();
-            Tangents = new List<Vector3>();
-            BiTangents = new List<Vector3>();
-			Indices = new List<int>();
+			Textures = TextureLoader.Load("data/textures/textures.jpg");
 
 			//left
 			addTriangle(
@@ -77,7 +69,10 @@ namespace Mugo
             CreateVAO();
         }
 
-		public int textureId { get; set; }
-        public int normalTextureID { get; set; }
+		public TextureHolder Textures
+		{
+			get;
+			set;
+		}
     }
 }

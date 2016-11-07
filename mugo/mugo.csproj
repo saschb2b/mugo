@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TunnelSegment.cs" />
     <Compile Include="Tunnel.cs" />
+    <Compile Include="TextureLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -74,7 +75,7 @@
     <None Include="data\textures\textures.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="data\textures\textures_nm.jpg">
+    <None Include="data\textures\textures.normals.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -96,9 +96,9 @@ namespace Mugo
                 zMover = 0.0f;
 				player.ResetTransformation();
 				cart.ResetTransformation();
-                tunnel.GenerateNextSegment(segment =>
+				tunnel.GenerateNextSegment(new TunnelSegment()
                 {
-                    segment.textureId = TextureManager.LoadTexture("data/textures/test.png");
+					Textures =  TextureLoader.Load("data/textures/test.png")
                 });
 			}
 

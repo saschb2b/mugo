@@ -38,14 +38,12 @@ namespace Mugo
             }
         }
 
-	    public void GenerateNextSegment(Action<TunnelSegment> segementModifier)
+	    public void GenerateNextSegment(TunnelSegment nextSegement)
 	    {
             segments[0].UnLoad();
             segments.RemoveAt(0);
 
-            var newSegment = new TunnelSegment();
-            segementModifier?.Invoke(newSegment);
-            segments.Add(newSegment);
+			segments.Add(nextSegement ?? new TunnelSegment());
 
             CalculateTransformations();
 	    }
@@ -53,7 +51,7 @@ namespace Mugo
         public void Draw()
 		{
 			foreach(var segment in segments) {
-                normalMappingMaterial.Draw(segment, segment.textureId, segment.normalTextureID, 1.0f);
+				normalMappingMaterial.Draw(segment, segment.Textures.TextureId, segment.Textures.NormalMapId, 1.0f);
             }
 		}
 

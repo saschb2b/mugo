@@ -1,5 +1,5 @@
 ﻿using System;
-using Engine.cgimin.material.simpletexture;
+using Engine.cgimin.material.normalmapping;
 using Engine.cgimin.material;
 using OpenTK;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace Mugo
 	public class Tunnel
 	{
 		private readonly List<TunnelSegment> segments;
-		private readonly SimpleTextureMaterial material;
+		private readonly NormalMappingMaterial normalMappingMaterial;
 
 		public Tunnel()
         {
@@ -25,7 +25,7 @@ namespace Mugo
                 new TunnelSegment(),
             };
 
-            material = new SimpleTextureMaterial();
+            normalMappingMaterial = new NormalMappingMaterial();
 
             CalculateTransformations();
         }
@@ -53,8 +53,8 @@ namespace Mugo
         public void Draw()
 		{
 			foreach(var segment in segments) {
-				material.Draw(segment, segment.TextureId);
-			}
+                normalMappingMaterial.Draw(segment, segment.textureId, segment.normalTextureID, 1.0f);
+            }
 		}
 
 		public void UnLoad() 

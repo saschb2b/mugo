@@ -12,12 +12,15 @@ namespace Mugo
 		public const int Depth = 10;
 
 		public TunnelSegment()
-		{
-			TextureId = TextureManager.LoadTexture("data/textures/textures.jpg");
+        {
+            textureId = TextureManager.LoadTexture("data/textures/textures.jpg");
+            normalTextureID = TextureManager.LoadTexture("data/textures/textures_nm.jpg");
 
-			Positions = new List<Vector3>();
-			UVs = new List<Vector2>();
-			Normals = new List<Vector3>();
+            Positions = new List<Vector3>();
+            Normals = new List<Vector3>();
+            UVs = new List<Vector2>();
+            Tangents = new List<Vector3>();
+            BiTangents = new List<Vector3>();
 			Indices = new List<int>();
 
 			//left
@@ -64,9 +67,12 @@ namespace Mugo
 				Vector3.One, Vector3.One, Vector3.One,
 				new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.7f), new Vector2(0f, 0.7f));
 
-			CreateVAO();
-		}
+            averageTangents();
 
-		public int TextureId { get; set; }
-	}
+            CreateVAO();
+        }
+
+		public int textureId { get; set; }
+        public int normalTextureID { get; set; }
+    }
 }

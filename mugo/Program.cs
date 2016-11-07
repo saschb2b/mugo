@@ -9,6 +9,7 @@ using System;
 using Engine.cgimin.camera;
 using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.texture;
+using Engine.cgimin.light;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -93,13 +94,16 @@ namespace Mugo
 				cart.ResetTransformation();
                 tunnel.GenerateNextSegment(segment =>
                 {
-                    segment.TextureId = TextureManager.LoadTexture("data/textures/test.png");
+                    segment.textureId = TextureManager.LoadTexture("data/textures/test.png");
                 });
 			}
 
 			zMover -= step;
 
             Camera.SetLookAt(new Vector3(1f, 2.0f, 3.0f + zMover), new Vector3(1f, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
+            // Licht setzen
+            Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(0.1f, 0.1f, 0.1f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.1f, 0.1f, 0.1f, 0.1f));
+
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
 

@@ -5,7 +5,7 @@ using OpenTK;
 
 namespace Mugo
 {
-    class TunnelSegment : BaseObject3D
+    public class TunnelSegment : BaseObject3D
 	{
 		public const int Width = 2;
 		public const int Height = 3;
@@ -67,6 +67,6 @@ namespace Mugo
 			CreateVAO();
 		}
 
-		public int TextureId { get; private set; }
+		public int TextureId { get; set; }
 	}
 }

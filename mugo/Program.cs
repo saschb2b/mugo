@@ -91,6 +91,10 @@ namespace Mugo
                 zMover = 0.0f;
 				player.ResetTransformation();
 				cart.ResetTransformation();
+                tunnel.GenerateNextSegment(segment =>
+                {
+                    segment.TextureId = TextureManager.LoadTexture("data/textures/test.png");
+                });
 			}
 
 			zMover -= step;

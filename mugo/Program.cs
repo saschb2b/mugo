@@ -8,6 +8,7 @@
 using System;
 using Engine.cgimin.camera;
 using Engine.cgimin.material.simpletexture;
+using Engine.cgimin.material.normalmapping;
 using Engine.cgimin.texture;
 using Engine.cgimin.light;
 using OpenTK;
@@ -24,7 +25,9 @@ namespace Mugo
         private CartModel cart;
 
         private SimpleTextureMaterial simpleTextureMaterial;
-		private Tunnel tunnel;
+        private NormalMappingMaterial normalMappingMaterial;
+
+        private Tunnel tunnel;
 
 		private float zMover = 0.0f;
 
@@ -47,6 +50,7 @@ namespace Mugo
 			tunnel = new Tunnel();
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
+            normalMappingMaterial = new NormalMappingMaterial();
 
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Front);
@@ -102,7 +106,7 @@ namespace Mugo
 
             Camera.SetLookAt(new Vector3(1f, 2.0f, 3.0f + zMover), new Vector3(1f, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             // Licht setzen
-            Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(0.1f, 0.1f, 0.1f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.1f, 0.1f, 0.1f, 0.1f));
+            Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(1.0f, 0.94f, 0.9f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
@@ -115,7 +119,7 @@ namespace Mugo
 				ClearBufferMask.DepthBufferBit);
 
 			tunnel.Draw();
-            simpleTextureMaterial.Draw(player, player.TextureId);
+            normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 
             SwapBuffers();

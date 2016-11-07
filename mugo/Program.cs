@@ -86,7 +86,7 @@ namespace Mugo
 
             const float step = 0.1f;
 
-            if (zMover <= -10.0f)
+			if (zMover <= -TunnelSegment.Depth)
             {
                 zMover = 0.0f;
 				player.ResetTransformation();

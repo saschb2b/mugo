@@ -34,7 +34,18 @@ namespace Mugo
         {
             for (var i = 0; i < segments.Count; i++)
             {
-                segments[i].Transformation = Matrix4.CreateTranslation(0, 0, (i - 2) * -TunnelSegment.Depth);
+                var segment = segments[i];
+                var zOffset = Matrix4.CreateTranslation(0, 0, (i - 2) * -TunnelSegment.Depth);
+
+                segment.Transformation = zOffset;
+
+                foreach (var element in segment.Elements.Values)
+                {
+                    var baseTranslation = Matrix4.CreateTranslation(element.DefaultTransformation.ExtractTranslation());
+                    baseTranslation *= Matrix4.CreateTranslation(element.Transformation.ExtractTranslation().X, 0f, 0f);
+
+                    element.Transformation = element.Transformation.ClearTranslation() * baseTranslation * zOffset;
+                }
             }
         }
 
@@ -51,7 +62,7 @@ namespace Mugo
         public void Draw()
 		{
 			foreach(var segment in segments) {
-				normalMappingMaterial.Draw(segment, segment.Textures.TextureId, segment.Textures.NormalMapId, 1.0f);
+				segment.Draw();
             }
 		}
 

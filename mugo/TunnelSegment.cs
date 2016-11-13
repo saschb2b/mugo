@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Engine.cgimin.material.normalmapping;
 using Engine.cgimin.object3d;
 using Engine.cgimin.texture;
 using OpenTK;
@@ -7,14 +9,17 @@ namespace Mugo
 {
     public class TunnelSegment : BaseObject3D
 	{
-		public const float Width = 6;
-        public const float RailCount = 3;
+	    private readonly Dictionary<int, ITunnelSegementElementModel> elements;
+	    public const float Width = 6;
+        public const int RailCount = 3;
 		public const int Height = 3;
 		public const int Depth = 10;
 
 		public TunnelSegment()
         {
+            elements = new Dictionary<int, ITunnelSegementElementModel>(RailCount);
 			Textures = TextureLoader.Load("data/textures/textures.jpg");
+            Material = new NormalMappingMaterial();
 
 			//left
 			addTriangle(
@@ -39,7 +44,7 @@ namespace Mugo
 				new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.7f), new Vector2(0f, 0.7f));
 
             //bottom
-            for (float i = 0; i < RailCount; i++)
+            for (int i = 0; i < RailCount; i++)
             {
                 addTriangle(
                 new Vector3(Width / RailCount + (Width / RailCount * i), 0, 0), new Vector3(Width / RailCount * i, 0, -Depth), new Vector3(Width / RailCount * i, 0, 0),
@@ -74,5 +79,43 @@ namespace Mugo
 			get;
 			set;
 		}
+
+	    public NormalMappingMaterial Material
+	    {
+	        get;
+            set;
+        }
+
+	    public IReadOnlyDictionary<int, ITunnelSegementElementModel> Elements => elements;
+
+	    public void SetElementAtPosition(int index, ITunnelSegementElementModel element)
+	    {
+	        if (index < 0 || index > RailCount)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            element.Transformation *= Matrix4.CreateTranslation(((Width / RailCount) / 2) * (index + 1), 0f, 0f);
+
+	        elements[index] = element;
+	    }
+
+	    public void Draw()
+	    {
+	        Material.Draw(this, Textures.TextureId, Textures.NormalMapId, 1f);
+
+	        foreach (var element in elements.Values)
+	        {
+	            element.Draw();
+	        }
+	    }
+
+	    public override void UnLoad()
+	    {
+            foreach (var element in elements.Values)
+            {
+                element.UnLoad();
+            }
+
+            base.UnLoad();
+        }
     }
 }

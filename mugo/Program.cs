@@ -11,6 +11,7 @@ using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.material.normalmapping;
 using Engine.cgimin.texture;
 using Engine.cgimin.light;
+using Engine.cgimin.object3d;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -29,7 +30,10 @@ namespace Mugo
 
         private Tunnel tunnel;
 
-		private float zMover = 0.0f;
+	    private PizzaModel pizza;
+
+
+        private float zMover = 0.0f;
 
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default)
@@ -49,7 +53,9 @@ namespace Mugo
 
 			tunnel = new Tunnel();
 
-			simpleTextureMaterial = new SimpleTextureMaterial();
+            pizza = new PizzaModel();
+
+            simpleTextureMaterial = new SimpleTextureMaterial();
             normalMappingMaterial = new NormalMappingMaterial();
 
             GL.Enable(EnableCap.CullFace);
@@ -96,13 +102,13 @@ namespace Mugo
                 zMover = 0.0f;
 				player.ResetTransformation();
 				cart.ResetTransformation();
-				tunnel.GenerateNextSegment(new TunnelSegment()
-                {
-					Textures =  TextureLoader.Load("data/textures/test.png")
-                });
+
+                var nextSegement = new TunnelSegment();
+                nextSegement.SetElementAtPosition(0, new PizzaModel());
+                tunnel.GenerateNextSegment(nextSegement);
 			}
 
-			zMover -= step;
+            zMover -= step;
 
             Camera.SetLookAt(new Vector3(1f, 2.0f, 3.0f + zMover), new Vector3(1f, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             // Licht setzen

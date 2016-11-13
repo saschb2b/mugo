@@ -25,7 +25,7 @@ namespace Mugo
         public int TextureId { get; private set; }
         public int normalTextureId { get; private set; }
 
-        public Matrix4 DefaultTransformation { get; private set; }
+        public Matrix4 DefaultTransformation { get; }
 
 		public void ResetTransformation()
 		{

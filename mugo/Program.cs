@@ -33,6 +33,8 @@ namespace Mugo
 
         private float zMover = 0.0f;
 
+        private Random random = new Random();
+
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default)
 		{
@@ -100,7 +102,7 @@ namespace Mugo
 				cart.ResetTransformation();
 
                 var nextSegement = new TunnelSegment();
-                nextSegement.SetElementAtPosition(0, new PizzaModel());
+                nextSegement.SetElementAtPosition(random.Next(TunnelSegment.RailCount), new PizzaModel());
                 tunnel.GenerateNextSegment(nextSegement);
             }
 

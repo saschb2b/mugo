@@ -21,6 +21,7 @@ namespace Mugo
 				}
 
 				texture = new TextureHolder(TextureManager.LoadTexture(path), normalMapId);
+                textures[path] = texture;
 			}
 
 			return texture;

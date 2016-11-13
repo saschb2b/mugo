@@ -6,6 +6,7 @@
 #region --- Using Directives ---
 
 using System;
+using System.IO;
 using System.Linq;
 using Engine.cgimin.camera;
 using Engine.cgimin.material.simpletexture;
@@ -14,6 +15,8 @@ using Engine.cgimin.texture;
 using Engine.cgimin.light;
 using Engine.cgimin.object3d;
 using OpenTK;
+using OpenTK.Audio;
+using OpenTK.Audio.OpenAL;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -35,7 +38,11 @@ namespace Mugo
 
         private Random random = new Random();
 
-		public MugoGame()
+	    private AudioContext context;
+	    private int source;
+	    private int buffer;
+
+	    public MugoGame()
 			: base(800, 600, GraphicsMode.Default)
 		{
 		}
@@ -63,6 +70,19 @@ namespace Mugo
 			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
+
+            context = new AudioContext();
+		    buffer = AL.GenBuffer();
+		    source = AL.GenSource();
+
+            AL.Source(source, ALSourceb.Looping, true);
+
+		    int channels, bits_per_sample, sample_rate;
+		    byte[] sound_data = Playback.LoadWave(File.Open("data/audio/background.wav", FileMode.Open), out channels, out bits_per_sample, out sample_rate);
+		    AL.BufferData(buffer, Playback.GetSoundFormat(channels, bits_per_sample), sound_data, sound_data.Length, sample_rate);
+
+		    AL.Source(source, ALSourcei.Buffer, buffer);
+		    AL.SourcePlay(source);
 		}
 
 		protected override void OnUnload(EventArgs e)
@@ -70,7 +90,11 @@ namespace Mugo
 			tunnel.UnLoad();
             player.UnLoad();
             cart.UnLoad();
-		}
+
+            AL.SourceStop(source);
+            AL.DeleteSource(source);
+            AL.DeleteBuffer(buffer);
+        }
        
 		protected override void OnResize(EventArgs e)
 		{

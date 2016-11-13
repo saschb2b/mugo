@@ -30,7 +30,9 @@ namespace Mugo
             CalculateTransformations();
         }
 
-        private void CalculateTransformations()
+	    public IReadOnlyList<TunnelSegment> Segememts => segments;
+
+	    private void CalculateTransformations()
         {
             for (var i = 0; i < segments.Count; i++)
             {

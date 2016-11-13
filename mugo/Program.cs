@@ -6,6 +6,7 @@
 #region --- Using Directives ---
 
 using System;
+using System.Linq;
 using Engine.cgimin.camera;
 using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.material.normalmapping;
@@ -30,9 +31,6 @@ namespace Mugo
 
         private Tunnel tunnel;
 
-	    private PizzaModel pizza;
-
-
         private float zMover = 0.0f;
 
 		public MugoGame()
@@ -52,8 +50,6 @@ namespace Mugo
 			cart = new CartModel();
 
 			tunnel = new Tunnel();
-
-            pizza = new PizzaModel();
 
             simpleTextureMaterial = new SimpleTextureMaterial();
             normalMappingMaterial = new NormalMappingMaterial();
@@ -106,7 +102,7 @@ namespace Mugo
                 var nextSegement = new TunnelSegment();
                 nextSegement.SetElementAtPosition(0, new PizzaModel());
                 tunnel.GenerateNextSegment(nextSegement);
-			}
+            }
 
             zMover -= step;
 
@@ -116,7 +112,6 @@ namespace Mugo
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
-
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -124,7 +119,19 @@ namespace Mugo
 			GL.Clear(ClearBufferMask.ColorBufferBit |
 				ClearBufferMask.DepthBufferBit);
 
-			tunnel.Draw();
+            var pizzas =
+                from segment in tunnel.Segememts
+                from element in segment.Elements.Values
+                where element is PizzaModel
+                select element;
+
+            foreach (var pizza in pizzas)
+            {
+                var transformation = pizza.Transformation;
+                pizza.Transformation = transformation.ClearTranslation() * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1)) * Matrix4.CreateTranslation(transformation.ExtractTranslation());
+            }
+
+            tunnel.Draw();
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 

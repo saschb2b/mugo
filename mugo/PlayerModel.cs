@@ -27,9 +27,11 @@ namespace Mugo
 
         public Matrix4 DefaultTransformation { get; }
 
-		public void ResetTransformation()
+		public void ResetZTransformation()
 		{
-			Transformation = DefaultTransformation;
-		}
+            Vector3 trans = Transformation.ExtractTranslation();
+            Transformation = Transformation.ClearTranslation();
+            Transformation *= Matrix4.CreateTranslation(trans.X, trans.Y, -0.8f);
+        }
     }
 }

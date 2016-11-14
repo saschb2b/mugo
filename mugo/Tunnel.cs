@@ -30,7 +30,7 @@ namespace Mugo
             CalculateTransformations();
         }
 
-	    public IReadOnlyList<TunnelSegment> Segememts => segments;
+	    public IReadOnlyList<TunnelSegment> Segements => segments;
 
 	    private void CalculateTransformations()
         {
@@ -50,6 +50,8 @@ namespace Mugo
                 }
             }
         }
+
+		public TunnelSegment CurrentSegment => Segements[2];
 
 	    public void GenerateNextSegment(TunnelSegment nextSegement)
 	    {

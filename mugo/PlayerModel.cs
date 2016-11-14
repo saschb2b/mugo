@@ -17,7 +17,7 @@ namespace Mugo
             normalTextureId = TextureManager.LoadTexture(normalTexturePath);
             Transformation *= Matrix4.CreateScale(0.6f);
             Transformation *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(180));
-            Transformation *= Matrix4.CreateTranslation(2.95f, 0.7f, -0.8f);
+            Transformation *= Matrix4.CreateTranslation(3f, 0.7f, -0.8f);
 
 			DefaultTransformation = Transformation;
         }

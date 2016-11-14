@@ -33,7 +33,7 @@ namespace Mugo
         private SimpleTextureMaterial simpleTextureMaterial;
         private NormalMappingMaterial normalMappingMaterial;
 
-        KeyboardState keyboardState, lastKeyboardState;
+        private KeyboardState keyboardState, lastKeyboardState;
 
         private Tunnel tunnel;
         
@@ -42,6 +42,8 @@ namespace Mugo
 
 		private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegment.RailWidth, 0, 0);
 		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegment.RailWidth, 0, 0);
+
+		private int playerLaneIndex = 1;
 
         private Random random = new Random();
 	    private AudioContext context;
@@ -137,6 +139,8 @@ namespace Mugo
                     xMover += 1.0f;
 					player.Transformation *= railStep;
 					cart.Transformation *= railStep;
+
+					playerLaneIndex += 1;
                 }
                 else
                 {
@@ -150,6 +154,8 @@ namespace Mugo
 					xMover -= 1.0f;
 					player.Transformation *= railStepNegative;
 					cart.Transformation *= railStepNegative;
+
+					playerLaneIndex -= 1;
                 } 
 				else
                 {
@@ -181,7 +187,16 @@ namespace Mugo
                 var nextSegement = new TunnelSegment();
                 nextSegement.SetElementAtPosition(random.Next(TunnelSegment.RailCount), new PizzaModel());
                 tunnel.GenerateNextSegment(nextSegement);
-            }
+            } 
+			else if (Math.Abs(Math.Abs(player.Transformation.ExtractTranslation().Z) - (TunnelSegment.Depth / 2)) < 0.00001)
+			{
+				ITunnelSegementElementModel element;
+
+				if (tunnel.CurrentSegment.Elements.TryGetValue(playerLaneIndex, out element))
+				{
+					tunnel.CurrentSegment.SetElementAtPosition(playerLaneIndex, null);
+				}
+			}
 
             zMover -= step;
 
@@ -204,7 +219,7 @@ namespace Mugo
 				ClearBufferMask.DepthBufferBit);
 
             var pizzas =
-                from segment in tunnel.Segememts
+                from segment in tunnel.Segements
                 from element in segment.Elements.Values
                 where element is PizzaModel
                 select element;

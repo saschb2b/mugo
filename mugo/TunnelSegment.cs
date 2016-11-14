@@ -96,17 +96,17 @@ namespace Mugo
 
 			ITunnelSegementElementModel previousElement;
 
-			if(elements.TryGetValue(index, out previousElement) && previousElement != null)
+			if(elements.TryGetValue(index, out previousElement))
 			{
 				previousElement.UnLoad();
+				elements.Remove(index);
 			}
 
 			if (element != null)
 			{
 				element.Transformation *= Matrix4.CreateTranslation(RailWidth * index + (RailWidth / 2), 0f, 0f);
-			}
-
-	        elements[index] = element;
+				elements[index] = element;
+			}        
 	    }
 
 	    public void Draw()

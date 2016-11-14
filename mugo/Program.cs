@@ -2,6 +2,7 @@
 // This code was written for the OpenTK library and has been released
 // to the Public Domain.
 // It is provided "as is" without express or implied warranty of any kind.
+using Engine;
 
 #region --- Using Directives ---
 
@@ -46,10 +47,8 @@ namespace Mugo
 		private int playerLaneIndex = 1;
 
         private Random random = new Random();
-	    private AudioContext context;
 
-	    private int source;
-	    private int buffer;
+		private Sound backgroundMusic;
 
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
@@ -81,18 +80,10 @@ namespace Mugo
             
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 
-            context = new AudioContext();
-		    buffer = AL.GenBuffer();
-		    source = AL.GenSource();
+			Sound.Init();
+			backgroundMusic = new Sound("data/audio/background.wav", looping: true);
+			backgroundMusic.Play();
 
-            AL.Source(source, ALSourceb.Looping, true);
-
-		    int channels, bits_per_sample, sample_rate;
-		    byte[] sound_data = Playback.LoadWave(File.Open("data/audio/background.wav", FileMode.Open), out channels, out bits_per_sample, out sample_rate);
-		    AL.BufferData(buffer, Playback.GetSoundFormat(channels, bits_per_sample), sound_data, sound_data.Length, sample_rate);
-
-		    AL.Source(source, ALSourcei.Buffer, buffer);
-		    AL.SourcePlay(source);
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
 
@@ -102,9 +93,7 @@ namespace Mugo
             player.UnLoad();
             cart.UnLoad();
 
-            AL.SourceStop(source);
-            AL.DeleteSource(source);
-            AL.DeleteBuffer(buffer);
+			backgroundMusic.UnLoad();
         }
        
 		protected override void OnResize(EventArgs e)
@@ -121,10 +110,10 @@ namespace Mugo
 		{
             // Get current state
             keyboardState = OpenTK.Input.Keyboard.GetState();
-            if (Keyboard[OpenTK.Input.Key.Escape])
+            if (Keyboard[Key.Escape])
 				this.Exit();
 
-			if (Keyboard[OpenTK.Input.Key.F11])
+			if (Keyboard[Key.F11])
 				if (WindowState != WindowState.Fullscreen)
 					WindowState = WindowState.Fullscreen;
 				else
@@ -165,13 +154,13 @@ namespace Mugo
 
 			if (KeyWasPressed(Key.M))
 			{
-				if(AL.GetSourceState(source) == ALSourceState.Playing)
+				if(backgroundMusic.State == ALSourceState.Playing)
 				{
-					AL.SourcePause(source);
+					backgroundMusic.Pause();
 				} 
 				else
 				{
-					AL.SourcePlay(source);
+					backgroundMusic.Play();
 				}
 			}
 

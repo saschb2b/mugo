@@ -50,6 +50,7 @@ namespace Mugo
         private Random random = new Random();
 
 		private Sound backgroundMusic;
+		private Sound pizzaCollectSound;
 
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
@@ -83,7 +84,10 @@ namespace Mugo
 
 			Sound.Init();
 			backgroundMusic = new Sound("data/audio/background.wav", looping: true);
+			backgroundMusic.Gain = 0.5f;
 			backgroundMusic.Play();
+
+			pizzaCollectSound = new Sound("data/audio/pizza_collect.wav");
 
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -95,6 +99,7 @@ namespace Mugo
             cart.UnLoad();
 
 			backgroundMusic.UnLoad();
+			pizzaCollectSound.UnLoad();
         }
        
 		protected override void OnResize(EventArgs e)
@@ -186,6 +191,7 @@ namespace Mugo
 				if (Math.Abs(player.Transformation.ExtractTranslation().Z - element.Transformation.ExtractTranslation().Z) < 0.00001)
 				{
 					tunnel.CurrentSegment.SetElementAtPosition(playerLaneIndex, null);
+					pizzaCollectSound.Play();
 				}
 			}
 

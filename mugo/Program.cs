@@ -40,6 +40,9 @@ namespace Mugo
         private float zMover = 0.0f;
         private float xMover = 0.0f;
 
+		private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegment.RailWidth, 0, 0);
+		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegment.RailWidth, 0, 0);
+
         private Random random = new Random();
 	    private AudioContext context;
 
@@ -127,32 +130,34 @@ namespace Mugo
 
             const float step = 0.1f;
 
-            if (KeyPress(Key.Right))
+            if (KeyWasPressed(Key.Right))
             {
                 if (xMover <= 0 && xMover <= 1.0f)
                 {
                     xMover += 1.0f;
-                    player.Transformation *= Matrix4.CreateTranslation(1.95f, 0, 0);
-                    cart.Transformation *= Matrix4.CreateTranslation(1.95f, 0, 0);
+					player.Transformation *= railStep;
+					cart.Transformation *= railStep;
                 }
                 else
                 {
-                    xMover = +1.0f;
+                    xMover = 1.0f;
                 }
             }
-            else if (KeyPress(Key.Left))
+            else if (KeyWasPressed(Key.Left))
             {
-                if (xMover >= 0) {
-                    xMover -= 1.0f;
-                    player.Transformation *= Matrix4.CreateTranslation(-1.95f, 0, 0);
-                    cart.Transformation *= Matrix4.CreateTranslation(-1.95f, 0, 0);
-                } else
+                if (xMover >= 0) 
+				{
+					xMover -= 1.0f;
+					player.Transformation *= railStepNegative;
+					cart.Transformation *= railStepNegative;
+                } 
+				else
                 {
                     xMover = -1.0f;
                 }
             }
 
-			if (KeyPress(Key.M))
+			if (KeyWasPressed(Key.M))
 			{
 				if(AL.GetSourceState(source) == ALSourceState.Playing)
 				{
@@ -188,7 +193,7 @@ namespace Mugo
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
         }
 
-        public bool KeyPress(Key key)
+        private bool KeyWasPressed(Key key)
         {
             return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
         }

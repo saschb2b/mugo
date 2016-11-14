@@ -37,13 +37,13 @@ namespace Mugo
         private float zMover = 0.0f;
 
         private Random random = new Random();
-
 	    private AudioContext context;
+
 	    private int source;
 	    private int buffer;
 
-	    public MugoGame()
-			: base(800, 600, GraphicsMode.Default)
+		public MugoGame()
+			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
 		}
        

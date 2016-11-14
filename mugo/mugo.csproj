@@ -75,7 +75,6 @@
     <Content Include="data\objects\Pizza.model">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="data\textures\road_rails_0039_01_s.jpg" />
     <None Include="data\textures\road_rails_0039_01_s.png">
@@ -87,6 +86,9 @@
     <None Include="data\textures\textures.normals.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="OpenTK.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

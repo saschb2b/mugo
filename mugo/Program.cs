@@ -53,6 +53,7 @@ namespace Mugo
 
 		private Sound backgroundMusic;
 		private Sound pizzaCollectSound;
+		private Sound cartLandingSound;
 
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
@@ -90,6 +91,8 @@ namespace Mugo
 			backgroundMusic.Play();
 
 			pizzaCollectSound = new Sound("data/audio/pizza_collect.wav");
+
+			cartLandingSound = new Sound("data/audio/cart_landing.wav");
 
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -164,7 +167,7 @@ namespace Mugo
                 yMover = 2;
             }
 
-                if (KeyWasPressed(Key.M))
+            if (KeyWasPressed(Key.M))
 			{
 				if(backgroundMusic.State == ALSourceState.Playing)
 				{
@@ -220,7 +223,8 @@ namespace Mugo
                 {
                     player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
                     cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
-                } else
+                } 
+				else
                 {
                     if (player.Transformation.ExtractTranslation().Y > 0.7f)
                     {
@@ -233,6 +237,8 @@ namespace Mugo
                 {
                     yMoverAppr = 0.0f;
                     yMover = 0.0f;
+
+					cartLandingSound.Play();
                 }
             }
           

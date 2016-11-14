@@ -121,10 +121,10 @@ namespace Mugo
 		{
             // Get current state
             keyboardState = OpenTK.Input.Keyboard.GetState();
-            if (Keyboard[OpenTK.Input.Key.Escape])
+            if (KeyWasPressed(Key.Escape))
 				this.Exit();
 
-			if (Keyboard[OpenTK.Input.Key.F11])
+			if (KeyWasPressed(Key.F11))
 				if (WindowState != WindowState.Fullscreen)
 					WindowState = WindowState.Fullscreen;
 				else
@@ -134,7 +134,7 @@ namespace Mugo
 
             if (KeyWasPressed(Key.Right))
             {
-                if (xMover <= 0 && xMover <= 1.0f)
+                if (xMover < 1)
                 {
                     xMover += 1.0f;
 					player.Transformation *= railStep;
@@ -149,7 +149,7 @@ namespace Mugo
             }
             else if (KeyWasPressed(Key.Left))
             {
-                if (xMover >= 0) 
+                if (xMover > -1) 
 				{
 					xMover -= 1.0f;
 					player.Transformation *= railStepNegative;

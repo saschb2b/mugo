@@ -14,6 +14,7 @@ namespace Mugo
         public const int RailCount = 3;
 		public const int Height = 3;
 		public const int Depth = 10;
+		public const float RailWidth = Width / RailCount;
 
 		public TunnelSegment()
         {
@@ -47,12 +48,12 @@ namespace Mugo
             for (int i = 0; i < RailCount; i++)
             {
                 addTriangle(
-                new Vector3(Width / RailCount + (Width / RailCount * i), 0, 0), new Vector3(Width / RailCount * i, 0, -Depth), new Vector3(Width / RailCount * i, 0, 0),
+                new Vector3(RailWidth + (RailWidth * i), 0, 0), new Vector3(RailWidth * i, 0, -Depth), new Vector3(RailWidth * i, 0, 0),
                 Vector3.One, Vector3.One, Vector3.One,
                 new Vector2(0.3f, 0.4f), new Vector2(0, 0), new Vector2(0, 0.4f));
 
                 addTriangle(
-                    new Vector3(Width / RailCount + (Width / RailCount * i), 0, 0), new Vector3(Width / RailCount + (Width / RailCount * i), 0, -Depth), new Vector3(Width / RailCount * i, 0, -Depth),
+                    new Vector3(RailWidth + (RailWidth * i), 0, 0), new Vector3(RailWidth + (RailWidth * i), 0, -Depth), new Vector3(RailWidth * i, 0, -Depth),
                     Vector3.One, Vector3.One, Vector3.One,
                     new Vector2(0.3f, 0.4f), new Vector2(0.3f, 0f), new Vector2(0f, 0f));
             }
@@ -90,10 +91,10 @@ namespace Mugo
 
 	    public void SetElementAtPosition(int index, ITunnelSegementElementModel element)
 	    {
-	        if (index < 0 || index > RailCount)
+	        if (index < 0 || index >= RailCount)
                 throw new ArgumentOutOfRangeException(nameof(index));
-
-            element.Transformation *= Matrix4.CreateTranslation(((Width / RailCount) / 2) * (index + 1), 0f, 0f);
+			
+			element.Transformation *= Matrix4.CreateTranslation(RailWidth * index + (RailWidth / 2), 0f, 0f);
 
 	        elements[index] = element;
 	    }

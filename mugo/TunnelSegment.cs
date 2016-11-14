@@ -93,8 +93,18 @@ namespace Mugo
 	    {
 	        if (index < 0 || index >= RailCount)
                 throw new ArgumentOutOfRangeException(nameof(index));
-			
-			element.Transformation *= Matrix4.CreateTranslation(RailWidth * index + (RailWidth / 2), 0f, 0f);
+
+			ITunnelSegementElementModel previousElement;
+
+			if(elements.TryGetValue(index, out previousElement) && previousElement != null)
+			{
+				previousElement.UnLoad();
+			}
+
+			if (element != null)
+			{
+				element.Transformation *= Matrix4.CreateTranslation(RailWidth * index + (RailWidth / 2), 0f, 0f);
+			}
 
 	        elements[index] = element;
 	    }

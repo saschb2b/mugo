@@ -152,6 +152,18 @@ namespace Mugo
                 cart.Transformation *= Matrix4.CreateTranslation(-0.5f, 0, 0);
             }
 
+			if (KeyPress(Key.M))
+			{
+				if(AL.GetSourceState(source) == ALSourceState.Playing)
+				{
+					AL.SourcePause(source);
+				} 
+				else
+				{
+					AL.SourcePlay(source);
+				}
+			}
+
             // Store current state for next comparison;
             lastKeyboardState = keyboardState;
 

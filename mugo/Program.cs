@@ -132,24 +132,24 @@ namespace Mugo
                 if (xMover <= 0 && xMover <= 1.0f)
                 {
                     xMover += 1.0f;
+                    player.Transformation *= Matrix4.CreateTranslation(1.95f, 0, 0);
+                    cart.Transformation *= Matrix4.CreateTranslation(1.95f, 0, 0);
                 }
                 else
                 {
                     xMover = +1.0f;
                 }
-                player.Transformation *= Matrix4.CreateTranslation(0.5f, 0, 0);
-                cart.Transformation *= Matrix4.CreateTranslation(0.5f, 0, 0);
             }
             else if (KeyPress(Key.Left))
             {
                 if (xMover >= 0) {
                     xMover -= 1.0f;
+                    player.Transformation *= Matrix4.CreateTranslation(-1.95f, 0, 0);
+                    cart.Transformation *= Matrix4.CreateTranslation(-1.95f, 0, 0);
                 } else
                 {
                     xMover = -1.0f;
                 }
-                player.Transformation *= Matrix4.CreateTranslation(-0.5f, 0, 0);
-                cart.Transformation *= Matrix4.CreateTranslation(-0.5f, 0, 0);
             }
 
 			if (KeyPress(Key.M))

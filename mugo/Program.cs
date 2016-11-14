@@ -39,6 +39,7 @@ namespace Mugo
         
         private float zMover = 0.0f;
         private float xMover = 0.0f;
+        private float xMoverAppr = 0.0f;
 
 		private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegment.RailWidth, 0, 0);
 		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegment.RailWidth, 0, 0);
@@ -199,9 +200,19 @@ namespace Mugo
 				}
 			}
 
+            const float xMoverStep = 0.2f;
+            if (xMoverAppr < xMover - 0.01f)
+            {
+                xMoverAppr += xMoverStep;
+            }
+            else if (xMoverAppr > xMover + 0.01f)
+            {
+                xMoverAppr -= xMoverStep;
+            }
+
             zMover -= step;
 
-            Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f +xMover, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
+            Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f + xMoverAppr, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             // Licht setzen
             Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(1.0f, 0.94f, 0.9f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
 

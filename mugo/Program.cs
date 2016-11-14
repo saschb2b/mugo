@@ -188,11 +188,12 @@ namespace Mugo
                 nextSegement.SetElementAtPosition(random.Next(TunnelSegment.RailCount), new PizzaModel());
                 tunnel.GenerateNextSegment(nextSegement);
             } 
-			else if (Math.Abs(Math.Abs(player.Transformation.ExtractTranslation().Z) - (TunnelSegment.Depth / 2)) < 0.00001)
-			{
-				ITunnelSegementElementModel element;
 
-				if (tunnel.CurrentSegment.Elements.TryGetValue(playerLaneIndex, out element))
+			ITunnelSegementElementModel element;
+
+			if (tunnel.CurrentSegment.Elements.TryGetValue(playerLaneIndex, out element))
+			{
+				if (Math.Abs(player.Transformation.ExtractTranslation().Z - element.Transformation.ExtractTranslation().Z) < 0.00001)
 				{
 					tunnel.CurrentSegment.SetElementAtPosition(playerLaneIndex, null);
 				}

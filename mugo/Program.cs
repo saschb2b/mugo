@@ -19,6 +19,7 @@ using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 #endregion --- Using Directives ---
 
@@ -32,9 +33,12 @@ namespace Mugo
         private SimpleTextureMaterial simpleTextureMaterial;
         private NormalMappingMaterial normalMappingMaterial;
 
-        private Tunnel tunnel;
+        KeyboardState keyboardState, lastKeyboardState;
 
+        private Tunnel tunnel;
+        
         private float zMover = 0.0f;
+        private float xMover = 0.0f;
 
         private Random random = new Random();
 	    private AudioContext context;
@@ -46,6 +50,7 @@ namespace Mugo
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
 		}
+        
        
 		protected override void OnLoad(EventArgs e)
 		{
@@ -68,7 +73,7 @@ namespace Mugo
 
             GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
-
+            
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 
             context = new AudioContext();
@@ -83,6 +88,7 @@ namespace Mugo
 
 		    AL.Source(source, ALSourcei.Buffer, buffer);
 		    AL.SourcePlay(source);
+			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
 
 		protected override void OnUnload(EventArgs e)
@@ -108,7 +114,9 @@ namespace Mugo
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			if (Keyboard[OpenTK.Input.Key.Escape])
+            // Get current state
+            keyboardState = OpenTK.Input.Keyboard.GetState();
+            if (Keyboard[OpenTK.Input.Key.Escape])
 				this.Exit();
 
 			if (Keyboard[OpenTK.Input.Key.F11])
@@ -119,11 +127,39 @@ namespace Mugo
 
             const float step = 0.1f;
 
-			if (zMover <= -TunnelSegment.Depth)
+            if (KeyPress(Key.Right))
+            {
+                if (xMover <= 0 && xMover <= 1.0f)
+                {
+                    xMover += 1.0f;
+                }
+                else
+                {
+                    xMover = +1.0f;
+                }
+                player.Transformation *= Matrix4.CreateTranslation(0.5f, 0, 0);
+                cart.Transformation *= Matrix4.CreateTranslation(0.5f, 0, 0);
+            }
+            else if (KeyPress(Key.Left))
+            {
+                if (xMover >= 0) {
+                    xMover -= 1.0f;
+                } else
+                {
+                    xMover = -1.0f;
+                }
+                player.Transformation *= Matrix4.CreateTranslation(-0.5f, 0, 0);
+                cart.Transformation *= Matrix4.CreateTranslation(-0.5f, 0, 0);
+            }
+
+            // Store current state for next comparison;
+            lastKeyboardState = keyboardState;
+
+            if (zMover <= -TunnelSegment.Depth)
             {
                 zMover = 0.0f;
-				player.ResetTransformation();
-				cart.ResetTransformation();
+				player.ResetZTransformation();
+				cart.ResetZTransformation();
 
                 var nextSegement = new TunnelSegment();
                 nextSegement.SetElementAtPosition(random.Next(TunnelSegment.RailCount), new PizzaModel());
@@ -132,12 +168,17 @@ namespace Mugo
 
             zMover -= step;
 
-            Camera.SetLookAt(new Vector3(1f, 2.0f, 3.0f + zMover), new Vector3(1f, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
+            Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f +xMover, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             // Licht setzen
             Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(1.0f, 0.94f, 0.9f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+        }
+
+        public bool KeyPress(Key key)
+        {
+            return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

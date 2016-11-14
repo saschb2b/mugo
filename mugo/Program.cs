@@ -41,8 +41,10 @@ namespace Mugo
         private float zMover = 0.0f;
         private float xMover = 0.0f;
         private float xMoverAppr = 0.0f;
+        private float yMover = 0.0f;
+        private float yMoverAppr = 0.0f;
 
-		private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegment.RailWidth, 0, 0);
+        private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegment.RailWidth, 0, 0);
 		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegment.RailWidth, 0, 0);
 
 		private int playerLaneIndex = 1;
@@ -157,8 +159,12 @@ namespace Mugo
                     xMover = -1.0f;
                 }
             }
+            else if (KeyWasPressed(Key.Up))
+            {
+                yMover = 2;
+            }
 
-			if (KeyWasPressed(Key.M))
+                if (KeyWasPressed(Key.M))
 			{
 				if(backgroundMusic.State == ALSourceState.Playing)
 				{
@@ -205,6 +211,31 @@ namespace Mugo
                 xMoverAppr -= xMoverStep;
             }
 
+            const float yMoverStep = 0.1f;
+            if (yMoverAppr < yMover * 2 - 0.01f)
+            {
+                yMoverAppr += yMoverStep;
+
+                if (yMoverAppr < 2)
+                {
+                    player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
+                    cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
+                } else
+                {
+                    if (player.Transformation.ExtractTranslation().Y > 0.7f)
+                    {
+                        player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
+                        cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
+                    }
+                }
+
+                if(Math.Abs(yMoverAppr - yMover * 2) < 0.001f)
+                {
+                    yMoverAppr = 0.0f;
+                    yMover = 0.0f;
+                }
+            }
+          
             zMover -= step;
 
             Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f + xMoverAppr, 0.5f, -5 + zMover), new Vector3(0, 1, 0));

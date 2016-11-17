@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CartModel.cs" />
-    <Compile Include="Playback.cs" />
     <Compile Include="ITunnelSegementElementModel.cs" />
     <Compile Include="PizzaModel.cs" />
     <Compile Include="PlayerModel.cs" />

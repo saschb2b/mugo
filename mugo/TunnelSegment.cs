@@ -5,23 +5,82 @@ using Engine.cgimin.object3d;
 using Engine.cgimin.texture;
 using OpenTK;
 
+using static Mugo.TunnelSegmentConfig;
+
 namespace Mugo
 {
-    public class TunnelSegment : BaseObject3D
+	static class TunnelSegmentConfig
 	{
-	    private readonly Dictionary<int, ITunnelSegementElementModel> elements;
-	    public const float Width = 6;
-        public const int RailCount = 3;
+		public const float Width = 6;
+		public const int RailCount = 3;
 		public const int Height = 3;
 		public const int Depth = 10;
 		public const float RailWidth = Width / RailCount;
+	}
 
-		public TunnelSegment()
+	class TunnelSegment : ClonedObject<TunnelSegmentInternal>
+	{
+		private readonly Dictionary<int, ITunnelSegementElementModel> elements = new Dictionary<int, ITunnelSegementElementModel> (RailCount);
+
+		public TextureHolder Textures {
+			get;
+			set;
+		}
+
+		public NormalMappingMaterial Material {
+			get;
+			set;
+		}
+
+		public IReadOnlyDictionary<int, ITunnelSegementElementModel> Elements => elements;
+
+		public TunnelSegment ()
+		{
+			Textures = TextureLoader.Load ("data/textures/textures.jpg");
+			Material = new NormalMappingMaterial ();
+		}
+
+		public void SetElementAtPosition(int index, ITunnelSegementElementModel element)
+		{
+			if (index < 0 || index >= TunnelSegmentConfig.RailCount)
+				throw new ArgumentOutOfRangeException (nameof (index));
+
+			ITunnelSegementElementModel previousElement;
+
+			if (elements.TryGetValue (index, out previousElement)) {
+				previousElement.UnLoad ();
+				elements.Remove (index);
+			}
+
+			if (element != null) {
+				element.Transformation *= Matrix4.CreateTranslation (RailWidth * index + (RailWidth / 2), 0f, 0f);
+				elements [index] = element;
+			}
+		}
+
+		public void Draw()
+		{
+			Material.Draw(this, Textures.TextureId, Textures.NormalMapId, 1f);
+
+			foreach (var element in elements.Values) {
+				element.Draw();
+			}
+		}
+
+		public override void UnLoad()
+		{
+			foreach (var element in elements.Values) {
+				element.UnLoad();
+			}
+
+			base.UnLoad();
+		}
+	}
+
+	internal class TunnelSegmentInternal : BaseObject3D
+	{
+		public TunnelSegmentInternal()
         {
-            elements = new Dictionary<int, ITunnelSegementElementModel>(RailCount);
-			Textures = TextureLoader.Load("data/textures/textures.jpg");
-            Material = new NormalMappingMaterial();
-
 			//left
 			addTriangle(
 				new Vector3(0, Height, -Depth), new Vector3(0, Height, 0), new Vector3(0, 0, 0), 
@@ -73,60 +132,6 @@ namespace Mugo
             averageTangents();
 
             CreateVAO();
-        }
-
-		public TextureHolder Textures
-		{
-			get;
-			set;
-		}
-
-	    public NormalMappingMaterial Material
-	    {
-	        get;
-            set;
-        }
-
-	    public IReadOnlyDictionary<int, ITunnelSegementElementModel> Elements => elements;
-
-	    public void SetElementAtPosition(int index, ITunnelSegementElementModel element)
-	    {
-	        if (index < 0 || index >= RailCount)
-                throw new ArgumentOutOfRangeException(nameof(index));
-
-			ITunnelSegementElementModel previousElement;
-
-			if(elements.TryGetValue(index, out previousElement))
-			{
-				previousElement.UnLoad();
-				elements.Remove(index);
-			}
-
-			if (element != null)
-			{
-				element.Transformation *= Matrix4.CreateTranslation(RailWidth * index + (RailWidth / 2), 0f, 0f);
-				elements[index] = element;
-			}        
-	    }
-
-	    public void Draw()
-	    {
-	        Material.Draw(this, Textures.TextureId, Textures.NormalMapId, 1f);
-
-	        foreach (var element in elements.Values)
-	        {
-	            element.Draw();
-	        }
-	    }
-
-	    public override void UnLoad()
-	    {
-            foreach (var element in elements.Values)
-            {
-                element.UnLoad();
-            }
-
-            base.UnLoad();
         }
     }
 }

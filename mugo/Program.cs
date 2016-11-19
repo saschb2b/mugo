@@ -44,8 +44,8 @@ namespace Mugo
         private float yMover = 0.0f;
         private float yMoverAppr = 0.0f;
 
-        private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegment.RailWidth, 0, 0);
-		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegment.RailWidth, 0, 0);
+        private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegmentConfig.RailWidth, 0, 0);
+		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegmentConfig.RailWidth, 0, 0);
 
 		private int playerLaneIndex = 1;
 
@@ -182,14 +182,14 @@ namespace Mugo
             // Store current state for next comparison;
             lastKeyboardState = keyboardState;
 
-            if (zMover <= -TunnelSegment.Depth)
+            if (zMover <= -TunnelSegmentConfig.Depth)
             {
                 zMover = 0.0f;
 				player.ResetZTransformation();
 				cart.ResetZTransformation();
 
                 var nextSegement = new TunnelSegment();
-                nextSegement.SetElementAtPosition(random.Next(TunnelSegment.RailCount), new PizzaModel());
+                nextSegement.SetElementAtPosition(random.Next(TunnelSegmentConfig.RailCount), new PizzaModel());
                 tunnel.GenerateNextSegment(nextSegement);
             } 
 

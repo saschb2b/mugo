@@ -17,7 +17,7 @@ namespace Mugo
 
 		public void Draw ()
 		{
-			material.Draw(this, internalOject.TextureId);
+			material.Draw(this, internalObject.TextureId);
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace Mugo
 			Transformation *= Matrix4.CreateScale (0.2f);
 			Transformation *= Matrix4.CreateRotationY (MathHelper.DegreesToRadians (90));
 			Transformation *= Matrix4.CreateRotationX (MathHelper.DegreesToRadians (90));
-			Transformation *= Matrix4.CreateTranslation (0f, 1.5f, -TunnelSegment.Depth / 2f);
+			Transformation *= Matrix4.CreateTranslation (0f, 1.5f, -TunnelSegmentConfig.Depth / 2f);
 
 			DefaultTransformation = Transformation;
 		}

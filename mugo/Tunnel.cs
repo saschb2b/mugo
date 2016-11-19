@@ -3,11 +3,10 @@ using Engine.cgimin.material.normalmapping;
 using Engine.cgimin.material;
 using OpenTK;
 using System.Collections.Generic;
-using OpenTK.Graphics.ES10;
 
 namespace Mugo
 {
-	public class Tunnel
+	class Tunnel
 	{
 		private readonly List<TunnelSegment> segments;
 		private readonly NormalMappingMaterial normalMappingMaterial;
@@ -37,7 +36,7 @@ namespace Mugo
             for (var i = 0; i < segments.Count; i++)
             {
                 var segment = segments[i];
-                var zOffset = Matrix4.CreateTranslation(0, 0, (i - 2) * -TunnelSegment.Depth);
+                var zOffset = Matrix4.CreateTranslation(0, 0, (i - 2) * -TunnelSegmentConfig.Depth);
 
                 segment.Transformation = zOffset;
 

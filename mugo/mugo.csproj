@@ -58,6 +58,7 @@
     <Compile Include="TunnelSegment.cs" />
     <Compile Include="Tunnel.cs" />
     <Compile Include="TextureLoader.cs" />
+    <Compile Include="ClonedObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

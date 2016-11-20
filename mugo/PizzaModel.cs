@@ -28,10 +28,9 @@ namespace Mugo
 		private const String objFilePath = "data/objects/Pizza.model";
 		private const String texturePath = "data/textures/Pizza.png";
 
-		public PizzaModelInternal () : base (objFilePath)
+		public PizzaModelInternal () : base (objFilePath, 0.2f)
 		{
 			TextureId = TextureManager.LoadTexture (texturePath);
-			Transformation *= Matrix4.CreateScale (0.2f);
 			Transformation *= Matrix4.CreateRotationY (MathHelper.DegreesToRadians (90));
 			Transformation *= Matrix4.CreateRotationX (MathHelper.DegreesToRadians (90));
 			Transformation *= Matrix4.CreateTranslation (0f, 1.5f, -TunnelSegmentConfig.Depth / 2f);

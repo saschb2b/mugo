@@ -21,6 +21,11 @@ namespace Mugo
 			UVs = internalObject.UVs;
 			Tangents = internalObject.Tangents;
 			BiTangents = internalObject.BiTangents;
+			radius = internalObject.radius;
+		}
+
+		public static void Init ()
+		{
 		}
 	}
 	

@@ -75,6 +75,7 @@ namespace Mugo
 			tunnel = new Tunnel();
 
             simpleTextureMaterial = new SimpleTextureMaterial();
+			PizzaModel.Init ();
             normalMappingMaterial = new NormalMappingMaterial();
 
             GL.Enable(EnableCap.CullFace);

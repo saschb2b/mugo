@@ -59,6 +59,7 @@
     <Compile Include="Tunnel.cs" />
     <Compile Include="TextureLoader.cs" />
     <Compile Include="ClonedObject.cs" />
+    <Compile Include="RockModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -97,6 +98,16 @@
     <None Include="data\audio\cart_landing.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="data\objects\Rock.blend" />
+    <Content Include="data\objects\Rock.model">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\textures\Rock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\textures\Rock.normals.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

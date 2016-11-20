@@ -10,6 +10,8 @@ namespace Mugo
 	{
 		private static readonly SimpleTextureMaterial material = new SimpleTextureMaterial();
 
+		public float Radius => radius;
+
 		public new Matrix4 Transformation {
 			get { return base.Transformation; }
 			set { base.Transformation = value; }

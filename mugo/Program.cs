@@ -59,8 +59,7 @@ namespace Mugo
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
 		}
-        
-       
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -74,8 +73,10 @@ namespace Mugo
 
 			tunnel = new Tunnel();
 
-            simpleTextureMaterial = new SimpleTextureMaterial();
+			RockModel.Init ();
 			PizzaModel.Init ();
+
+			simpleTextureMaterial = new SimpleTextureMaterial();
             normalMappingMaterial = new NormalMappingMaterial();
 
             GL.Enable(EnableCap.CullFace);
@@ -180,6 +181,8 @@ namespace Mugo
 				}
 			}
 
+			CollisionCheck();
+
             // Store current state for next comparison;
             lastKeyboardState = keyboardState;
 
@@ -189,21 +192,8 @@ namespace Mugo
 				player.ResetZTransformation();
 				cart.ResetZTransformation();
 
-                var nextSegement = new TunnelSegment();
-                nextSegement.SetElementAtPosition(random.Next(TunnelSegmentConfig.RailCount), new PizzaModel());
-                tunnel.GenerateNextSegment(nextSegement);
+				GenerateNextTunnelSegment ();
             } 
-
-			ITunnelSegementElementModel element;
-
-			if (tunnel.CurrentSegment.Elements.TryGetValue(playerLaneIndex, out element))
-			{
-				if (Math.Abs(player.Transformation.ExtractTranslation().Z - element.Transformation.ExtractTranslation().Z) < 0.00001)
-				{
-					tunnel.CurrentSegment.SetElementAtPosition(playerLaneIndex, null);
-					pizzaCollectSound.Play();
-				}
-			}
 
             const float xMoverStep = 0.2f;
             if (xMoverAppr < xMover - 0.01f)
@@ -257,6 +247,42 @@ namespace Mugo
         {
             return (keyboardState[key] && (keyboardState[key] != lastKeyboardState[key]));
         }
+
+		private void CollisionCheck()
+		{
+			ITunnelSegementElementModel element;
+
+			if (tunnel.CurrentSegment.Elements.TryGetValue (playerLaneIndex, out element)) {
+				if (Math.Abs (player.Transformation.ExtractTranslation ().Z - element.Transformation.ExtractTranslation ().Z) <= element.Radius) {
+					tunnel.CurrentSegment.SetElementAtPosition (playerLaneIndex, null);
+
+					if (element is PizzaModel) {
+						pizzaCollectSound.Play ();				
+					} else if (element is RockModel) {
+						Exit ();
+					}
+
+				}
+			}
+		}
+
+		private void GenerateNextTunnelSegment()
+		{
+            var nextSegement = new TunnelSegment ();
+			var obstaclePosition = random.Next (TunnelSegmentConfig.RailCount);
+
+			ITunnelSegementElementModel nextObstacle;
+
+			if (random.Next (2) != 0) {
+				nextObstacle = new RockModel ();
+			}
+			else {
+				nextObstacle = new PizzaModel ();
+			}
+
+			nextSegement.SetElementAtPosition (obstaclePosition, nextObstacle);
+			tunnel.GenerateNextSegment (nextSegement);
+		}
 
         protected override void OnRenderFrame(FrameEventArgs e)
 		{

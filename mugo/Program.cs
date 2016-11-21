@@ -135,7 +135,7 @@ namespace Mugo
 				else
 					WindowState = WindowState.Normal;
 
-            if (KeyWasPressed(Key.Right))
+            if (KeyWasPressed(Key.Right) || KeyWasPressed(Key.D))
             {
                 if (xMover < 1)
                 {
@@ -150,7 +150,7 @@ namespace Mugo
                     xMover = 1.0f;
                 }
             }
-            else if (KeyWasPressed(Key.Left))
+            else if (KeyWasPressed(Key.Left) || KeyWasPressed(Key.A))
             {
                 if (xMover > -1) 
 				{
@@ -165,7 +165,7 @@ namespace Mugo
                     xMover = -1.0f;
                 }
             }
-            else if (KeyWasPressed(Key.Up))
+            else if (KeyWasPressed(Key.Up) || KeyWasPressed(Key.A))
             {
                 yMover = 2;
             }

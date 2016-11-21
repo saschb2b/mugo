@@ -44,6 +44,8 @@ namespace Mugo
         private float yMover = 0.0f;
         private float yMoverAppr = 0.0f;
 
+        private float step = 0.1f;
+
         private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegmentConfig.RailWidth, 0, 0);
 		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegmentConfig.RailWidth, 0, 0);
 
@@ -132,8 +134,6 @@ namespace Mugo
 				else
 					WindowState = WindowState.Normal;
 
-            const float step = 0.1f;
-
             if (KeyWasPressed(Key.Right))
             {
                 if (xMover < 1)
@@ -193,6 +193,7 @@ namespace Mugo
 				cart.ResetZTransformation();
 
 				GenerateNextTunnelSegment ();
+                step *= 1.05f;
             } 
 
             const float xMoverStep = 0.2f;

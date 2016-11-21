@@ -45,6 +45,7 @@ namespace Mugo
         private float yMoverAppr = 0.0f;
 
         private float step = 0.1f;
+        private int fov = 60;
 
         private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegmentConfig.RailWidth, 0, 0);
 		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegmentConfig.RailWidth, 0, 0);
@@ -67,7 +68,7 @@ namespace Mugo
 			base.OnLoad(e);
 
 			Camera.Init();
-			Camera.SetWidthHeightFov(800, 600, 60);
+			Camera.SetWidthHeightFov(800, 600, fov);
 
             player = new PlayerModel();
 
@@ -194,6 +195,11 @@ namespace Mugo
 
 				GenerateNextTunnelSegment ();
                 step *= 1.05f;
+                if(fov < 90)
+                {
+                    fov += 2;
+                    Camera.SetWidthHeightFov(800, 600, fov);
+                }
             } 
 
             const float xMoverStep = 0.2f;

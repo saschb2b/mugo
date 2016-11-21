@@ -3,6 +3,8 @@
 // to the Public Domain.
 // It is provided "as is" without express or implied warranty of any kind.
 using Engine;
+using Engine.cgimin.sound;
+using Engine.cgimin.text;
 
 #region --- Using Directives ---
 
@@ -58,6 +60,9 @@ namespace Mugo
 		private Sound pizzaCollectSound;
 		private Sound cartLandingSound;
 
+	    private DrawableString pizzaCounterString;
+	    private int pizzaCounter;
+
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
@@ -98,6 +103,9 @@ namespace Mugo
 			pizzaCollectSound = new Sound("data/audio/pizza_collect.wav");
 
 			cartLandingSound = new Sound("data/audio/cart_landing.wav");
+
+		    pizzaCounter = 0;
+            pizzaCounterString = new DrawableString(pizzaCounter.ToString());
 
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -192,8 +200,9 @@ namespace Mugo
                 zMover = 0.0f;
 				player.ResetZTransformation();
 				cart.ResetZTransformation();
+                pizzaCounterString.Transformation = Matrix4.Identity;
 
-				GenerateNextTunnelSegment ();
+                GenerateNextTunnelSegment ();
                 step *= 1.05f;
                 if(fov < 90)
                 {
@@ -248,6 +257,7 @@ namespace Mugo
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+            pizzaCounterString.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
         }
 
         private bool KeyWasPressed(Key key)
@@ -263,12 +273,20 @@ namespace Mugo
 				if (Math.Abs (player.Transformation.ExtractTranslation ().Z - element.Transformation.ExtractTranslation ().Z) <= element.Radius) {
 					tunnel.CurrentSegment.SetElementAtPosition (playerLaneIndex, null);
 
-					if (element is PizzaModel) {
-						pizzaCollectSound.Play ();				
-					} else if (element is RockModel) {
+					if (element is PizzaModel)
+                    {
+                        pizzaCollectSound.Play();
+
+                        pizzaCounter++;
+                        pizzaCounterString.UnLoad();
+                        pizzaCounterString = new DrawableString(pizzaCounter.ToString())
+                        {
+                            Transformation = pizzaCounterString.Transformation
+                        };
+                    }
+                    else if (element is RockModel) {
 						Exit ();
 					}
-
 				}
 			}
 		}
@@ -311,6 +329,7 @@ namespace Mugo
             tunnel.Draw();
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
+            pizzaCounterString.Draw();
 
             SwapBuffers();
 		}

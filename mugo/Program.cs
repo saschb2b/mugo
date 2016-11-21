@@ -165,7 +165,7 @@ namespace Mugo
                     xMover = -1.0f;
                 }
             }
-            else if (KeyWasPressed(Key.Up) || KeyWasPressed(Key.A))
+            else if (KeyWasPressed(Key.Up) || KeyWasPressed(Key.W))
             {
                 yMover = 2;
             }

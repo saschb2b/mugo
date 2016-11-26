@@ -106,6 +106,8 @@ namespace Mugo
 
 		    pizzaCounter = 0;
             pizzaCounterString = new DrawableString(pizzaCounter.ToString());
+            pizzaCounterString.Transformation *= Matrix4.CreateScale(0.2f);
+            pizzaCounterString.Transformation *= Matrix4.CreateTranslation(-1f, -1f, 0);
 
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -200,7 +202,6 @@ namespace Mugo
                 zMover = 0.0f;
 				player.ResetZTransformation();
 				cart.ResetZTransformation();
-                pizzaCounterString.Transformation = Matrix4.Identity;
 
                 GenerateNextTunnelSegment ();
                 step *= 1.05f;
@@ -257,7 +258,6 @@ namespace Mugo
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
-            pizzaCounterString.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
         }
 
         private bool KeyWasPressed(Key key)

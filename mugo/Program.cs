@@ -30,6 +30,9 @@ namespace Mugo
 {
     public class MugoGame : GameWindow
 	{
+		private static readonly CommandLineOptions options = new CommandLineOptions ();
+		private static Random random;
+
         private PlayerModel player;
         private CartModel cart;
 
@@ -53,8 +56,6 @@ namespace Mugo
 		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegmentConfig.RailWidth, 0, 0);
 
 		private int playerLaneIndex = 1;
-
-        private Random random = new Random();
 
 		private Sound backgroundMusic;
 		private Sound pizzaCollectSound;
@@ -98,7 +99,9 @@ namespace Mugo
 			Sound.Init();
 			backgroundMusic = new Sound("data/audio/background.wav", looping: true);
 			backgroundMusic.Gain = 0.5f;
-			backgroundMusic.Play();
+			if (!options.NoBackgroundMusic) {
+				backgroundMusic.Play ();
+			}
 
 			pizzaCollectSound = new Sound("data/audio/pizza_collect.wav");
 
@@ -335,8 +338,17 @@ namespace Mugo
 		}
         
 		[STAThread]
-		public static void Main()
+		public static void Main(String[] args)
 		{
+			CommandLine.Parser.Default.ParseArgumentsStrict (args, options);
+
+			if (options.Seed.HasValue) {
+				random = new Random (options.Seed.Value);
+			} 
+			else {
+				random = new Random ();
+			}
+
 			using (MugoGame example = new MugoGame()) {
 				// Get the title and category  of this example using reflection.
 				//ExampleAttribute info = ((ExampleAttribute)example.GetType().GetCustomAttributes(false)[0]);

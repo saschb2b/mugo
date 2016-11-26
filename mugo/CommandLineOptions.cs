@@ -11,11 +11,11 @@ namespace Mugo
 	{
 		[Option ('m', "noBackgroundMusic",
 			DefaultValue = false,
-  			HelpText = "Disables background music. It can still be enabled via the m hotkey.")]
+  			HelpText = "Disable background music. It can still be enabled via the m hotkey.")]
 		public bool NoBackgroundMusic { get; set; }
 
 		[Option ('s', "seed",
-	  		HelpText = "Sets the seed value of the random number generator.")]
+	  		HelpText = "Set the seed value of the random number generator.")]
 		public int? Seed { get; set; }
 
 		[HelpOption ('h', "help")]

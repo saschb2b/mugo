@@ -23,6 +23,7 @@ using OpenTK.Audio.OpenAL;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using System.Drawing;
 
 #endregion --- Using Directives ---
 
@@ -32,6 +33,7 @@ namespace Mugo
 	{
 		private static readonly CommandLineOptions options = new CommandLineOptions ();
 		private static Random random;
+		private static String hudInformationFormat = "speed: {0}, distance: {1}, pizza: {2}";
 
         private PlayerModel player;
         private CartModel cart;
@@ -63,6 +65,7 @@ namespace Mugo
 
 	    private DrawableString pizzaCounterString;
 	    private int pizzaCounter;
+		private int distanceCounter;
 
 		public MugoGame()
 			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
@@ -108,9 +111,8 @@ namespace Mugo
 			cartLandingSound = new Sound("data/audio/cart_landing.wav");
 
 		    pizzaCounter = 0;
-            pizzaCounterString = new DrawableString(pizzaCounter.ToString());
-            pizzaCounterString.Transformation *= Matrix4.CreateScale(0.2f);
-            pizzaCounterString.Transformation *= Matrix4.CreateTranslation(-1f, -1f, 0);
+			distanceCounter = 0;
+			CreateHud ();
 
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -213,6 +215,8 @@ namespace Mugo
                     fov += 2;
                     Camera.SetWidthHeightFov(800, 600, fov);
                 }
+
+				distanceCounter++;
             } 
 
             const float xMoverStep = 0.2f;
@@ -261,6 +265,8 @@ namespace Mugo
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+
+			CreateHud ();
         }
 
         private bool KeyWasPressed(Key key)
@@ -281,11 +287,6 @@ namespace Mugo
                         pizzaCollectSound.Play();
 
                         pizzaCounter++;
-                        pizzaCounterString.UnLoad();
-                        pizzaCounterString = new DrawableString(pizzaCounter.ToString())
-                        {
-                            Transformation = pizzaCounterString.Transformation
-                        };
                     }
                     else if (element is RockModel) {
 						Exit ();
@@ -312,6 +313,16 @@ namespace Mugo
 			tunnel.GenerateNextSegment (nextSegement);
 		}
 
+		private void CreateHud()
+		{
+			const float scale = 0.055f;
+
+			pizzaCounterString?.UnLoad ();
+			pizzaCounterString = new DrawableString (String.Format (hudInformationFormat, (int)(step * 100), distanceCounter, pizzaCounter));
+			pizzaCounterString.Transformation *= Matrix4.CreateScale (scale);
+			pizzaCounterString.Transformation *= Matrix4.CreateTranslation (-1f, 1f - scale, 0);
+		}
+
         protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit |
@@ -332,7 +343,9 @@ namespace Mugo
             tunnel.Draw();
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
-            pizzaCounterString.Draw();
+
+			GL.BlendColor (Color.Black);
+			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);
 
             SwapBuffers();
 		}

@@ -4,12 +4,13 @@ using Engine.cgimin.object3d;
 using Engine.cgimin.texture;
 using OpenTK;
 using Engine.cgimin.material.normalmapping;
+using Engine.cgimin.material.normalmappingfog;
 
 namespace Mugo
 {
 	class RockModel : ClonedObject<RockModelInternal>, ITunnelSegementElementModel
 	{
-		private static readonly NormalMappingMaterial material = new NormalMappingMaterial();
+		private static readonly NormalMappingMaterialFog material = new NormalMappingMaterialFog();
 
 		public float Radius => radius;
 

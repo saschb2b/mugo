@@ -6,6 +6,7 @@ using Engine.cgimin.texture;
 using OpenTK;
 
 using static Mugo.TunnelSegmentConfig;
+using Engine.cgimin.material.normalmappingfog;
 
 namespace Mugo
 {
@@ -27,7 +28,7 @@ namespace Mugo
 			set;
 		}
 
-		public NormalMappingMaterial Material {
+		public NormalMappingMaterialFog Material {
 			get;
 			set;
 		}
@@ -37,7 +38,7 @@ namespace Mugo
 		public TunnelSegment ()
 		{
 			Textures = TextureLoader.Load ("data/textures/textures.jpg");
-			Material = new NormalMappingMaterial ();
+			Material = new NormalMappingMaterialFog ();
 		}
 
 		public void SetElementAtPosition(int index, ITunnelSegementElementModel element)

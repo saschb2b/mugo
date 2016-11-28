@@ -75,6 +75,7 @@ namespace Mugo
 
 			Camera.Init();
 			Camera.SetWidthHeightFov(800, 600, fov);
+			Camera.SetupFog (0f, 80f, new Vector3(0f, 0f, 0f));
 
             player = new PlayerModel();
 
@@ -92,7 +93,7 @@ namespace Mugo
             GL.CullFace(CullFaceMode.Front);
 
             GL.Enable(EnableCap.DepthTest);
-			GL.ClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+			GL.ClearColor(Color.Black);
             
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 

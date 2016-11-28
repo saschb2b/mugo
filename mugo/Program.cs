@@ -75,7 +75,7 @@ namespace Mugo
 
 			Camera.Init();
 			Camera.SetWidthHeightFov(800, 600, fov);
-			Camera.SetupFog (0f, 80f, new Vector3(0f, 0f, 0f));
+			InitFog ();
 
             player = new PlayerModel();
 
@@ -207,6 +207,7 @@ namespace Mugo
                 zMover = 0.0f;
 				player.ResetZTransformation();
 				cart.ResetZTransformation();
+				InitFog ();
 
                 GenerateNextTunnelSegment ();
                 step *= 1.05f;
@@ -278,6 +279,9 @@ namespace Mugo
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
 
+			Camera.FogStart += step;
+			Camera.FogEnd += step;
+
 			CreateHud ();
         }
 
@@ -333,6 +337,11 @@ namespace Mugo
 			pizzaCounterString = new DrawableString (String.Format (hudInformationFormat, (int)(step * 100), distanceCounter, pizzaCounter));
 			pizzaCounterString.Transformation *= Matrix4.CreateScale (scale);
 			pizzaCounterString.Transformation *= Matrix4.CreateTranslation (-1f, 1f - scale, 0);
+		}
+
+		private void InitFog() 
+		{
+			Camera.SetupFog (15f, 65f, new Vector3 (0f, 0f, 0f));
 		}
 
         protected override void OnRenderFrame(FrameEventArgs e)

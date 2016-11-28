@@ -149,7 +149,10 @@ namespace Mugo
 
             if (KeyWasPressed(Key.Right) || KeyWasPressed(Key.D))
             {
-                yMover = 0.2f;
+                if (yMoverAppr == 0f)
+                {
+                    yMover = 0.2f;
+                }
                 if (xMover < 1)
                 {
                     xMover += 1.0f;
@@ -162,7 +165,10 @@ namespace Mugo
             }
             else if (KeyWasPressed(Key.Left) || KeyWasPressed(Key.A))
             {
-                yMover = 0.2f;
+                if(yMoverAppr == 0f)
+                {
+                    yMover = 0.2f;
+                }
                 if (xMover > -1) 
 				{
 					xMover -= 1.0f;
@@ -175,7 +181,7 @@ namespace Mugo
             }
             else if (KeyWasPressed(Key.Up) || KeyWasPressed(Key.W))
             {
-                yMover = 0.7f;
+                yMover = 1.5f;
             }
 
             if (KeyWasPressed(Key.M))
@@ -232,11 +238,12 @@ namespace Mugo
 
                 if (Math.Abs(xMoverAppr - xMover * TunnelSegmentConfig.RailWidth) < 0.001f)
                 {
+                    Console.WriteLine(xMoverAppr);
                     cartLandingSound.Play();
                 }
             }
 
-            const float yMoverStep = 0.1f;
+            const float yMoverStep = 1f/10;
             if (yMoverAppr < yMover * 2 - 0.01f)
             {
                 yMoverAppr += yMoverStep;
@@ -252,7 +259,7 @@ namespace Mugo
                     cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
                 }
 
-                if(Math.Abs(yMoverAppr - yMover * 2) < 0.001f)
+                if(Math.Abs(yMoverAppr - yMover * 2) < 0.01f)
                 {
                     yMoverAppr = 0.0f;
                     yMover = 0.0f;

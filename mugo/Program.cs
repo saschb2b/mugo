@@ -54,9 +54,6 @@ namespace Mugo
         private float step = 0.1f;
         private int fov = 60;
 
-        private readonly Matrix4 railStep = Matrix4.CreateTranslation(TunnelSegmentConfig.RailWidth, 0, 0);
-		private readonly Matrix4 railStepNegative = Matrix4.CreateTranslation(-TunnelSegmentConfig.RailWidth, 0, 0);
-
 		private int playerLaneIndex = 1;
 
 		private Sound backgroundMusic;
@@ -152,12 +149,10 @@ namespace Mugo
 
             if (KeyWasPressed(Key.Right) || KeyWasPressed(Key.D))
             {
+                yMover = 0.2f;
                 if (xMover < 1)
                 {
                     xMover += 1.0f;
-					player.Transformation *= railStep;
-					cart.Transformation *= railStep;
-
 					playerLaneIndex += 1;
                 }
                 else
@@ -167,12 +162,10 @@ namespace Mugo
             }
             else if (KeyWasPressed(Key.Left) || KeyWasPressed(Key.A))
             {
+                yMover = 0.2f;
                 if (xMover > -1) 
 				{
 					xMover -= 1.0f;
-					player.Transformation *= railStepNegative;
-					cart.Transformation *= railStepNegative;
-
 					playerLaneIndex -= 1;
                 } 
 				else
@@ -182,7 +175,7 @@ namespace Mugo
             }
             else if (KeyWasPressed(Key.Up) || KeyWasPressed(Key.W))
             {
-                yMover = 2;
+                yMover = 0.7f;
             }
 
             if (KeyWasPressed(Key.M))
@@ -219,33 +212,44 @@ namespace Mugo
 				distanceCounter++;
             } 
 
-            const float xMoverStep = 0.2f;
-            if (xMoverAppr < xMover - 0.01f)
+            const float xMoverStep = 1f/3;
+            if (xMoverAppr < xMover * TunnelSegmentConfig.RailWidth - 0.01f)
             {
                 xMoverAppr += xMoverStep;
+                player.Transformation *= Matrix4.CreateTranslation(xMoverStep, 0, 0);
+                cart.Transformation *= Matrix4.CreateTranslation(xMoverStep, 0, 0);
+
+                if (Math.Abs(xMoverAppr - xMover * TunnelSegmentConfig.RailWidth) < 0.001f)
+                {
+                    cartLandingSound.Play();
+                }
             }
-            else if (xMoverAppr > xMover + 0.01f)
+            else if (xMoverAppr > xMover * TunnelSegmentConfig.RailWidth + 0.01f)
             {
                 xMoverAppr -= xMoverStep;
+                player.Transformation *= Matrix4.CreateTranslation(-xMoverStep, 0, 0);
+                cart.Transformation *= Matrix4.CreateTranslation(-xMoverStep, 0, 0);
+
+                if (Math.Abs(xMoverAppr - xMover * TunnelSegmentConfig.RailWidth) < 0.001f)
+                {
+                    cartLandingSound.Play();
+                }
             }
 
             const float yMoverStep = 0.1f;
             if (yMoverAppr < yMover * 2 - 0.01f)
             {
                 yMoverAppr += yMoverStep;
-
-                if (yMoverAppr < 2)
+                Console.WriteLine(yMoverAppr);
+                if (yMoverAppr < yMover + 0.01f)
                 {
                     player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
                     cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
                 } 
 				else
                 {
-                    if (player.Transformation.ExtractTranslation().Y > 0.7f)
-                    {
-                        player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
-                        cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
-                    }
+                    player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
+                    cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
                 }
 
                 if(Math.Abs(yMoverAppr - yMover * 2) < 0.001f)

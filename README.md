@@ -2,6 +2,8 @@
 
 University project to make something beautiful and interactive.
 
+![Screenshot](screenshot.JPG)
+
 ### Controls
 
 |Key|Action

@@ -53,7 +53,9 @@ namespace Mugo
         private float yMoverAppr = 0.0f;
 
         private float step = 0.1f;
-        private int fov = 60;
+        private float fov = 60;
+        private float currentFov = 60;
+        private float fovIncrement = 1.01f;
 
 		private int playerLaneIndex = 1;
 
@@ -77,7 +79,7 @@ namespace Mugo
 			base.OnLoad(e);
 
 			Camera.Init();
-			Camera.SetWidthHeightFov(800, 600, fov);
+			Camera.SetWidthHeightFov(800, 600, currentFov);
 			InitFog ();
 
             player = new PlayerModel();
@@ -216,6 +218,7 @@ namespace Mugo
 
             if (zMover <= -TunnelSegmentConfig.Depth)
             {
+                Console.WriteLine("test");
                 zMover = 0.0f;
 				player.ResetZTransformation();
 				cart.ResetZTransformation();
@@ -223,14 +226,19 @@ namespace Mugo
 
                 GenerateNextTunnelSegment ();
                 step *= 1.05f;
-                if(fov < 90)
+                if(fov < 100)
                 {
                     fov += 2;
-                    Camera.SetWidthHeightFov(800, 600, fov);
                 }
 
 				distanceCounter++;
-            } 
+            }
+
+            if(currentFov < fov)
+            {
+                currentFov *= fovIncrement;
+                Camera.SetWidthHeightFov(800, 600, currentFov);
+            }
 
             const float xMoverStep = 1f/3;
             if (xMoverAppr < xMover * TunnelSegmentConfig.RailWidth - 0.01f)

@@ -60,8 +60,10 @@ namespace Mugo
 		private Sound backgroundMusic;
 		private Sound pizzaCollectSound;
 		private Sound cartLandingSound;
+		private Sound cartSideMoveSound;
 
-	    private DrawableString pizzaCounterString;
+
+		private DrawableString pizzaCounterString;
 	    private int pizzaCounter;
 		private int distanceCounter;
 
@@ -108,6 +110,9 @@ namespace Mugo
 			pizzaCollectSound = new Sound("data/audio/pizza_collect.wav");
 
 			cartLandingSound = new Sound("data/audio/cart_landing.wav");
+
+			cartSideMoveSound = new Sound ("data/audio/cart_landing.wav");
+			cartSideMoveSound.Gain = 0.5f;
 
 		    pizzaCounter = 0;
 			distanceCounter = 0;
@@ -236,7 +241,7 @@ namespace Mugo
 
                 if (Math.Abs(xMoverAppr - xMover * TunnelSegmentConfig.RailWidth) < 0.001f)
                 {
-                    cartLandingSound.Play();
+                    cartSideMoveSound.Play();
                 }
             }
             else if (xMoverAppr > xMover * TunnelSegmentConfig.RailWidth + 0.01f)
@@ -247,7 +252,7 @@ namespace Mugo
 
                 if (Math.Abs(xMoverAppr - xMover * TunnelSegmentConfig.RailWidth) < 0.001f)
                 {
-                    cartLandingSound.Play();
+                    cartSideMoveSound.Play();
                 }
             }
 

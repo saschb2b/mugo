@@ -37,6 +37,7 @@ namespace Mugo
 
         private PlayerModel player;
         private CartModel cart;
+		private FogBackground fogBackground;
 
         private SimpleTextureMaterial simpleTextureMaterial;
         private NormalMappingMaterial normalMappingMaterial;
@@ -64,7 +65,6 @@ namespace Mugo
 		private Sound cartLandingSound;
 		private Sound cartSideMoveSound;
 
-
 		private DrawableString pizzaCounterString;
 	    private int pizzaCounter;
 		private int distanceCounter;
@@ -88,6 +88,8 @@ namespace Mugo
 
 			tunnel = new Tunnel();
 
+			fogBackground = new FogBackground (TunnelSegmentConfig.Width, TunnelSegmentConfig.Height);
+
 			RockModel.Init ();
 			PizzaModel.Init ();
 
@@ -98,7 +100,7 @@ namespace Mugo
             GL.CullFace(CullFaceMode.Front);
 
             GL.Enable(EnableCap.DepthTest);
-			GL.ClearColor(Color.Black);
+			GL.ClearColor(0.1f, 0.1f, 0.1f, 1f);
             
 			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 
@@ -299,6 +301,7 @@ namespace Mugo
 			Camera.FogStart += step;
 			Camera.FogEnd += step;
 
+			fogBackground.Transformation = fogBackground.Transformation.ClearTranslation() * Matrix4.CreateTranslation (0, 0, -(Camera.FogEnd - 5));
 			CreateHud ();
         }
 
@@ -356,9 +359,9 @@ namespace Mugo
 			pizzaCounterString.Transformation *= Matrix4.CreateTranslation (-1f, 1f - scale, 0);
 		}
 
-		private void InitFog() 
+		private void InitFog ()
 		{
-			Camera.SetupFog (15f, 65f, new Vector3 (0f, 0f, 0f));
+			Camera.SetupFog (20f, 55f, new Vector3 (0.1f, 0.1f, 0.1f));
 		}
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -381,6 +384,8 @@ namespace Mugo
             tunnel.Draw();
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
+
+			fogBackground.Draw ();
 
 			GL.BlendColor (Color.Black);
 			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);

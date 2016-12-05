@@ -49,6 +49,7 @@ namespace Mugo
         private float xMover = 0.0f;
         private float xMoverAppr = 0.0f;
         private float yMover = 0.0f;
+        private float yMoverVelocity = 0.0f;
         private float yMoverAppr = 0.0f;
 
         private float step = 0.1f;
@@ -153,6 +154,7 @@ namespace Mugo
                 if (yMoverAppr == 0f)
                 {
                     yMover = 0.2f;
+                    yMoverVelocity = 4f;
                 }
                 if (xMover < 1)
                 {
@@ -169,6 +171,7 @@ namespace Mugo
                 if(yMoverAppr == 0f)
                 {
                     yMover = 0.2f;
+                    yMoverVelocity = 4f;
                 }
                 if (xMover > -1) 
 				{
@@ -182,7 +185,11 @@ namespace Mugo
             }
             else if (KeyWasPressed(Key.Up) || KeyWasPressed(Key.W))
             {
-                yMover = 1.5f;
+                if (yMoverAppr == 0f)
+                {
+                    yMover = 1.5f;
+                    yMoverVelocity = 10f;
+                }
             }
 
             if (KeyWasPressed(Key.M))
@@ -240,32 +247,27 @@ namespace Mugo
 
                 if (Math.Abs(xMoverAppr - xMover * TunnelSegmentConfig.RailWidth) < 0.001f)
                 {
-                    Console.WriteLine(xMoverAppr);
                     cartLandingSound.Play();
                 }
             }
 
-            float yMoverStep = yMover / 10f;
+            float yMoverStep = yMover / yMoverVelocity;
             if (Math.Abs(yMoverAppr - yMover * 2) > 0.01f)
             {
                 yMoverAppr += yMoverStep;
-                Console.WriteLine(yMoverAppr);
                 
                     if (yMoverAppr < yMover + 0.01f)
                     {
-                        Console.WriteLine("Up");
                         player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
                         cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
                     }
                     else
                     {
-                        Console.WriteLine("Down");
                         player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
                         cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
                     }
                 if (Math.Abs(yMoverAppr - yMover * 2) < 0.01f)
                 {
-                    Console.WriteLine("Land");
                     yMoverAppr = 0.0f;
                     yMover = 0.0f;
 

@@ -89,7 +89,6 @@ namespace Mugo
             {
                 float z = Depth / parts * i * -1;
                 float zPrev = Depth / parts * (i-1) * -1;
-                Console.WriteLine(z);
                 //left
                 addTriangle(
                     new Vector3(0, Height, z), new Vector3(0, Height, zPrev), new Vector3(0, 0, zPrev),

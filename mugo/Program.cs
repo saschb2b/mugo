@@ -82,7 +82,6 @@ namespace Mugo
 
 			Camera.Init();
 			Camera.SetWidthHeightFov(800, 600, currentFov);
-			InitFog ();
 
             player = new PlayerModel();
 
@@ -123,6 +122,7 @@ namespace Mugo
 		    pizzaCounter = 0;
 			distanceCounter = 0;
 			CreateHud ();
+			InitFog ();
 
 			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -374,7 +374,7 @@ namespace Mugo
 
 		private void InitFog ()
 		{
-			Camera.SetupFog (20f, 55f, new Vector3 (0.1f, 0.1f, 0.1f));
+			Camera.SetupFog (tunnel.Length - 60f, tunnel.Length - 15f, new Vector3 (0.1f, 0.1f, 0.1f));
 		}
 
         protected override void OnRenderFrame(FrameEventArgs e)

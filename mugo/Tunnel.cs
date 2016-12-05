@@ -9,7 +9,7 @@ namespace Mugo
 	class Tunnel
 	{
 		private readonly List<TunnelSegment> segments;
-		private readonly NormalMappingMaterial normalMappingMaterial;
+		private const int backSegments = 2;
 
 		public Tunnel()
         {
@@ -20,23 +20,21 @@ namespace Mugo
                 new TunnelSegment(),
                 new TunnelSegment(),
                 new TunnelSegment(),
-                new TunnelSegment(),
-                new TunnelSegment(),
             };
-
-            normalMappingMaterial = new NormalMappingMaterial();
 
             CalculateTransformations();
         }
 
 	    public IReadOnlyList<TunnelSegment> Segements => segments;
 
+		public float Length => (Segements.Count - backSegments) * TunnelSegmentConfig.Depth;
+
 	    private void CalculateTransformations()
         {
             for (var i = 0; i < segments.Count; i++)
             {
                 var segment = segments[i];
-                var zOffset = Matrix4.CreateTranslation(0, 0, (i - 2) * -TunnelSegmentConfig.Depth);
+				var zOffset = Matrix4.CreateTranslation(0, 0, (i - backSegments) * -TunnelSegmentConfig.Depth);
 
                 segment.Transformation = zOffset;
 

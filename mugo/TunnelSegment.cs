@@ -17,13 +17,15 @@ namespace Mugo
 		public const int Height = 3;
 		public const int Depth = 10;
 		public const float RailWidth = Width / RailCount;
-	}
+    }
 
 	class TunnelSegment : ClonedObject<TunnelSegmentInternal>
 	{
 		private readonly Dictionary<int, ITunnelSegementElementModel> elements = new Dictionary<int, ITunnelSegementElementModel> (RailCount);
+        private string[] textures = { "textures.jpg", "textures2.jpg", "textures3.jpg" };
+        Random rand = new Random();
 
-		public TextureHolder Textures {
+        public TextureHolder Textures {
 			get;
 			set;
 		}
@@ -37,7 +39,7 @@ namespace Mugo
 
 		public TunnelSegment ()
 		{
-			Textures = TextureLoader.Load ("data/textures/textures.jpg");
+			Textures = TextureLoader.Load ("data/textures/" + textures[rand.Next(0, textures.Length)]);
 			Material = new NormalMappingMaterialFog ();
 		}
 

@@ -30,13 +30,17 @@ in mat3 fragTBN;
 in vec4 fragV;
 in vec4 viewPosition;
 
+uniform float counter;
+
 // die finale Farbe
 out vec4 outputColor;
 
 void main()
 {	
+	vec2 fragTexcoord2 = vec2(fragTexcoord.x, fragTexcoord.y + counter * 0.03);
+
 	// die Vertex-Normale berechnen
-    vec3 normal = texture(normalmap_texture, fragTexcoord).rgb;
+    vec3 normal = texture(normalmap_texture, fragTexcoord2).rgb;
 	normal = normalize(normal * 2.0 - 1.0); 
 	normal = normalize(fragTBN * normal); 
 
@@ -49,7 +53,7 @@ void main()
 	float brightness = clamp(dot(normalize(normal), light_direction), 0, 1);
 	
 	// surfaceColor ist die farbe aus der Textur...
-	vec4 surfaceColor = texture(color_texture, fragTexcoord);
+	vec4 surfaceColor = texture(color_texture, fragTexcoord2);
 
 	//				 Ambiente Farbe						  + Diffuser Farbanteil								  + Speculares Licht
     // outputColor = (surfaceColor * light_ambient_color) + (surfaceColor * brightness * light_diffuse_color) + specularIntensity * light_specular_color;

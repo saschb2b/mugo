@@ -43,6 +43,7 @@ void main()
 
 	// in gl_Position die finalan Vertex-Position geschrieben ("modelview_projection_matrix" * "in_position")
 	gl_Position = modelview_projection_matrix * vec4(in_position, 1);
+
 	viewPosition = gl_Position;
 }
 

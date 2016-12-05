@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.cgimin.object3d;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace Mugo
 {
@@ -8,6 +9,7 @@ namespace Mugo
 	{
 		private TextureHolder textures;
 		private FogBackgroundMaterial material;
+		private float counter = 0;
 
 		public FogBackground (float width, float height)
 		{
@@ -38,7 +40,8 @@ namespace Mugo
 
 		public void Draw()
 		{
-			material.Draw (this, textures.TextureId, textures.NormalMapId, 1f);
+			material.Draw (this, textures.TextureId, textures.NormalMapId, 1f, counter);
+			counter += 0.1f;
 		}
 	}
 }

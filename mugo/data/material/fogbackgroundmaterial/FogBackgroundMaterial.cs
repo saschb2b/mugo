@@ -29,6 +29,8 @@ namespace Mugo
 		private int fogEndLocation;
 		private int fogColorLocation;
 
+		private int counterLocation;
+
         public FogBackgroundMaterial()
         {
             // Shader-Programm wird aus den externen Files generiert...
@@ -69,11 +71,12 @@ namespace Mugo
 			fogStartLocation = GL.GetUniformLocation (Program, "fogStart");
 			fogEndLocation = GL.GetUniformLocation (Program, "fogEnd");
 			fogColorLocation = GL.GetUniformLocation (Program, "fogColor");
+
+			counterLocation = GL.GetUniformLocation (Program, "counter");
         }
 
-        public void Draw(BaseObject3D object3d, int textureID, int normalTextureID, float shininess)
-        {
-          
+        public void Draw(BaseObject3D object3d, int textureID, int normalTextureID, float shininess, float counter)
+		{
             // Das Vertex-Array-Objekt unseres Objekts wird benutzt
             GL.BindVertexArray(object3d.Vao);
 
@@ -119,6 +122,8 @@ namespace Mugo
 			GL.Uniform1 (fogEndLocation, Camera.FogEnd);
 			GL.Uniform3 (fogColorLocation, Camera.FogColor);
 
+			GL.Uniform1 (counterLocation, counter);
+
             // Positions Parameter
             GL.Uniform4(cameraPositionLocation, new Vector4(Camera.Position.X, Camera.Position.Y, Camera.Position.Z, 1));
 
@@ -135,9 +140,7 @@ namespace Mugo
 
         public override void DrawWithSettings(BaseObject3D object3d, MaterialSettings settings)
         {
-            Draw(object3d, settings.colorTexture, settings.normalTexture, settings.shininess);
+            Draw(object3d, settings.colorTexture, settings.normalTexture, settings.shininess, 0);
         }
-
-
     }
 }

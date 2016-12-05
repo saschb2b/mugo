@@ -245,28 +245,31 @@ namespace Mugo
                 }
             }
 
-            const float yMoverStep = 1f/10;
-            if (yMoverAppr < yMover * 2 - 0.01f)
+            float yMoverStep = yMover / 10f;
+            if (Math.Abs(yMoverAppr - yMover * 2) > 0.01f)
             {
                 yMoverAppr += yMoverStep;
                 Console.WriteLine(yMoverAppr);
-                if (yMoverAppr < yMover + 0.01f)
+                
+                    if (yMoverAppr < yMover + 0.01f)
+                    {
+                        Console.WriteLine("Up");
+                        player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
+                        cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Down");
+                        player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
+                        cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
+                    }
+                if (Math.Abs(yMoverAppr - yMover * 2) < 0.01f)
                 {
-                    player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
-                    cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep, 0);
-                } 
-				else
-                {
-                    player.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
-                    cart.Transformation *= Matrix4.CreateTranslation(0, yMoverStep * -1f, 0);
-                }
-
-                if(Math.Abs(yMoverAppr - yMover * 2) < 0.01f)
-                {
+                    Console.WriteLine("Land");
                     yMoverAppr = 0.0f;
                     yMover = 0.0f;
 
-					cartLandingSound.Play();
+                    cartLandingSound.Play();
                 }
             }
           

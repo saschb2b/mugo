@@ -87,7 +87,7 @@ namespace Mugo
         {
             for (int i = 1; i <= parts; i++)
             {
-                float z = Depth / parts * (i) * -1;
+                float z = Depth / parts * i * -1;
                 float zPrev = Depth / parts * (i-1) * -1;
                 Console.WriteLine(z);
                 //left

@@ -59,7 +59,9 @@ namespace Mugo
 
 		private int playerLaneIndex = 1;
 
-		private Sound backgroundMusic;
+        private bool speedUnlocked = false;
+
+        private Sound backgroundMusic;
 		private Sound pizzaCollectSound;
 		private Sound cartLandingSound;
 		private Sound cartSideMoveSound;
@@ -211,7 +213,14 @@ namespace Mugo
 				}
 			}
 
-			CollisionCheck();
+
+
+            if (KeyWasPressed(Key.Space))
+            {
+                speedUnlocked = !speedUnlocked;
+            }
+
+            CollisionCheck();
 
             // Store current state for next comparison;
             lastKeyboardState = keyboardState;
@@ -223,8 +232,12 @@ namespace Mugo
 				cart.ResetZTransformation();
 				InitFog ();
 
+                if (speedUnlocked || step < 1.5f)
+                {
+                    step *= 1.05f;
+                }
+
                 GenerateNextTunnelSegment ();
-                step *= 1.05f;
                 if(fov < 100)
                 {
                     fov += 2;

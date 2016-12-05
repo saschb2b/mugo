@@ -1,19 +1,18 @@
 ﻿using System;
 using Engine.cgimin.object3d;
 using OpenTK;
-using Engine.cgimin.material.normalmappingfog;
 
 namespace Mugo
 {
 	public class FogBackground : BaseObject3D
 	{
 		private TextureHolder textures;
-		private NormalMappingMaterialFog material;
+		private FogBackgroundMaterial material;
 
 		public FogBackground (float width, float height)
 		{
 			textures = TextureLoader.Load ("data/textures/fog.jpg");
-			material = new NormalMappingMaterialFog ();
+			material = new FogBackgroundMaterial ();
 
 			const int parts = 10;
 

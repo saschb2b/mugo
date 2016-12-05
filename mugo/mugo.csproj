@@ -65,6 +65,7 @@
     <Compile Include="RockModel.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="FogBackground.cs" />
+    <Compile Include="data\material\fogbackgroundmaterial\FogBackgroundMaterial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -128,6 +129,12 @@
     <Content Include="data\textures\fog.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="data\material\fogbackgroundmaterial\FogBackgroundMaterial_FS.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\material\fogbackgroundmaterial\FogBackgroundMaterial_VS.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -170,5 +177,9 @@
       <Project>{957D9C3C-F774-49C7-BFC0-725E52CD20C3}</Project>
       <Name>engine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="data\material\" />
+    <Folder Include="data\material\fogbackgroundmaterial\" />
   </ItemGroup>
 </Project>

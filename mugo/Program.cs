@@ -218,7 +218,6 @@ namespace Mugo
 
             if (zMover <= -TunnelSegmentConfig.Depth)
             {
-                Console.WriteLine("test");
                 zMover = 0.0f;
 				player.ResetZTransformation();
 				cart.ResetZTransformation();

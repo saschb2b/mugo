@@ -77,7 +77,7 @@ namespace Mugo
 		private int distanceCounter;
 
 		public MugoGame()
-			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
+			: base(2560, 1440, new GraphicsMode(32, 24, 8, 2), "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
 		}
 

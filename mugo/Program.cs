@@ -130,7 +130,7 @@ namespace Mugo
 			distanceCounter = 0;
 			CreateHud ();
 			InitFog ();
-            ShadowMapping.Init(2048, 20, 20);
+            ShadowMapping.Init(2048, 50, 50);
 
             Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -314,7 +314,7 @@ namespace Mugo
 
             Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f + xMoverAppr, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             // Licht setzen
-            Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(1.0f, 0.94f, 0.9f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
+            Light.SetDirectionalLight(new Vector3(5.5f, 0.5f, -0.1f), new Vector4(1.0f * 0.8f, 0.894f * 0.8f, 0.659f * 0.8f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);

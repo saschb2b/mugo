@@ -14,6 +14,7 @@ using System.Linq;
 using Engine.cgimin.camera;
 using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.material.normalmapping;
+using Engine.cgimin.material.normalmappingfogshadow;
 using Engine.cgimin.texture;
 using Engine.cgimin.light;
 using Engine.cgimin.object3d;
@@ -24,6 +25,8 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System.Drawing;
+using Engine.cgimin.material.castshadow;
+using Engine.cgimin.shadowmapping;
 
 #endregion --- Using Directives ---
 
@@ -41,6 +44,8 @@ namespace Mugo
 
         private SimpleTextureMaterial simpleTextureMaterial;
         private NormalMappingMaterial normalMappingMaterial;
+
+        private CastShadowMaterial castShadowMaterial;
 
         private KeyboardState keyboardState, lastKeyboardState;
 
@@ -96,6 +101,8 @@ namespace Mugo
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
             normalMappingMaterial = new NormalMappingMaterial();
+
+            castShadowMaterial = new CastShadowMaterial();
 
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Front);
@@ -251,7 +258,7 @@ namespace Mugo
             if(currentFov < fov)
             {
                 currentFov *= fovIncrement;
-                Camera.SetWidthHeightFov(800, 600, currentFov);
+               // Camera.SetWidthHeightFov(800, 600, currentFov);
             }
 
             const float xMoverStep = 1f/3;
@@ -378,8 +385,13 @@ namespace Mugo
 		}
 
         protected override void OnRenderFrame(FrameEventArgs e)
-		{
-			GL.Clear(ClearBufferMask.ColorBufferBit |
+        {
+            ShadowMapping.StartShadowMapping();
+            castShadowMaterial.Draw(cart);
+            castShadowMaterial.Draw(player);
+            ShadowMapping.EndShadowMapping();
+
+            GL.Clear(ClearBufferMask.ColorBufferBit |
 				ClearBufferMask.DepthBufferBit);
 
             var pizzas =
@@ -393,12 +405,15 @@ namespace Mugo
                 var transformation = pizza.Transformation;
                 pizza.Transformation = transformation.ClearTranslation() * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1)) * Matrix4.CreateTranslation(transformation.ExtractTranslation());
             }
-
             tunnel.Draw();
+
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 
-			fogBackground.Draw ();
+
+            fogBackground.Draw ();
+
+            ShadowMapping.Init(2048, 20, 20);
 
 			GL.BlendColor (Color.Black);
 			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);

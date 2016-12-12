@@ -130,8 +130,9 @@ namespace Mugo
 			distanceCounter = 0;
 			CreateHud ();
 			InitFog ();
+            ShadowMapping.Init(2048, 20, 20);
 
-			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
+            Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
 
 		protected override void OnUnload(EventArgs e)
@@ -323,7 +324,6 @@ namespace Mugo
 
 			fogBackground.Transformation = fogBackground.Transformation.ClearTranslation() * Matrix4.CreateTranslation (0, 0, -(Camera.FogEnd - 5));
 			CreateHud ();
-            ShadowMapping.Init(2048, 20, 20);
         }
 
         private bool KeyWasPressed(Key key)

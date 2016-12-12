@@ -109,8 +109,6 @@ namespace Mugo
 
             GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.1f, 0.1f, 0.1f, 1f);
-            
-			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 
 			Sound.Init();
 			backgroundMusic = new Sound("data/audio/background.wav", looping: true);

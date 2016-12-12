@@ -14,6 +14,7 @@ using System.Linq;
 using Engine.cgimin.camera;
 using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.material.normalmapping;
+using Engine.cgimin.material.normalmappingfogshadow;
 using Engine.cgimin.texture;
 using Engine.cgimin.light;
 using Engine.cgimin.object3d;
@@ -24,6 +25,8 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System.Drawing;
+using Engine.cgimin.material.castshadow;
+using Engine.cgimin.shadowmapping;
 
 #endregion --- Using Directives ---
 
@@ -41,6 +44,8 @@ namespace Mugo
 
         private SimpleTextureMaterial simpleTextureMaterial;
         private NormalMappingMaterial normalMappingMaterial;
+
+        private CastShadowMaterial castShadowMaterial;
 
         private KeyboardState keyboardState, lastKeyboardState;
 
@@ -72,7 +77,7 @@ namespace Mugo
 		private int distanceCounter;
 
 		public MugoGame()
-			: base(800, 600, GraphicsMode.Default, "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
+			: base(800, 600, new GraphicsMode(32, 24, 8, 2), "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
 		}
 
@@ -81,7 +86,9 @@ namespace Mugo
 			base.OnLoad(e);
 
 			Camera.Init();
-			Camera.SetWidthHeightFov(800, 600, currentFov);
+            WindowState = WindowState.Fullscreen;
+            Camera.SetWidthHeightFov(Width, Height, currentFov);
+            
 
             player = new PlayerModel();
 
@@ -97,13 +104,13 @@ namespace Mugo
 			simpleTextureMaterial = new SimpleTextureMaterial();
             normalMappingMaterial = new NormalMappingMaterial();
 
+            castShadowMaterial = new CastShadowMaterial();
+
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Front);
 
             GL.Enable(EnableCap.DepthTest);
 			GL.ClearColor(0.1f, 0.1f, 0.1f, 1f);
-            
-			Camera.SetLookAt(new Vector3(1f, 0.5f, 1.5f), new Vector3(1f, 0.5f, -10), new Vector3(0, 1, 0));
 
 			Sound.Init();
 			backgroundMusic = new Sound("data/audio/background.wav", looping: true);
@@ -123,8 +130,9 @@ namespace Mugo
 			distanceCounter = 0;
 			CreateHud ();
 			InitFog ();
+            ShadowMapping.Init(2048, 50, 50);
 
-			Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
+            Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
 
 		protected override void OnUnload(EventArgs e)
@@ -251,7 +259,7 @@ namespace Mugo
             if(currentFov < fov)
             {
                 currentFov *= fovIncrement;
-                Camera.SetWidthHeightFov(800, 600, currentFov);
+               // Camera.SetWidthHeightFov(800, 600, currentFov);
             }
 
             const float xMoverStep = 1f/3;
@@ -306,7 +314,7 @@ namespace Mugo
 
             Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f + xMoverAppr, 0.5f, -5 + zMover), new Vector3(0, 1, 0));
             // Licht setzen
-            Light.SetDirectionalLight(new Vector3(1f, 0.5f, -5), new Vector4(1.0f, 0.94f, 0.9f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
+            Light.SetDirectionalLight(new Vector3(5.5f, 0.5f, -0.1f), new Vector4(1.0f * 0.8f, 0.894f * 0.8f, 0.659f * 0.8f, 0.1f), new Vector4(1.0f, 1.0f, 1.0f, 0.0f), new Vector4(0.2f, 0.2f, 0.2f, 0.1f));
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
@@ -378,9 +386,16 @@ namespace Mugo
 		}
 
         protected override void OnRenderFrame(FrameEventArgs e)
-		{
-			GL.Clear(ClearBufferMask.ColorBufferBit |
+        {
+
+            ShadowMapping.StartShadowMapping();
+            castShadowMaterial.Draw(cart);
+            castShadowMaterial.Draw(player);
+            ShadowMapping.EndShadowMapping();
+
+            GL.Clear(ClearBufferMask.ColorBufferBit |
 				ClearBufferMask.DepthBufferBit);
+
 
             var pizzas =
                 from segment in tunnel.Segements
@@ -394,19 +409,24 @@ namespace Mugo
                 pizza.Transformation = transformation.ClearTranslation() * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1)) * Matrix4.CreateTranslation(transformation.ExtractTranslation());
             }
 
+
             tunnel.Draw();
+
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 
-			fogBackground.Draw ();
+
+            fogBackground.Draw ();
+
+
 
 			GL.BlendColor (Color.Black);
 			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);
 
             SwapBuffers();
-		}
-        
-		[STAThread]
+        }
+
+        [STAThread]
 		public static void Main(String[] args)
 		{
 			CommandLine.Parser.Default.ParseArgumentsStrict (args, options);

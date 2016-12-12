@@ -323,6 +323,7 @@ namespace Mugo
 
 			fogBackground.Transformation = fogBackground.Transformation.ClearTranslation() * Matrix4.CreateTranslation (0, 0, -(Camera.FogEnd - 5));
 			CreateHud ();
+            ShadowMapping.Init(2048, 20, 20);
         }
 
         private bool KeyWasPressed(Key key)
@@ -386,6 +387,7 @@ namespace Mugo
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+
             ShadowMapping.StartShadowMapping();
             castShadowMaterial.Draw(cart);
             castShadowMaterial.Draw(player);
@@ -393,6 +395,7 @@ namespace Mugo
 
             GL.Clear(ClearBufferMask.ColorBufferBit |
 				ClearBufferMask.DepthBufferBit);
+
 
             var pizzas =
                 from segment in tunnel.Segements
@@ -405,6 +408,8 @@ namespace Mugo
                 var transformation = pizza.Transformation;
                 pizza.Transformation = transformation.ClearTranslation() * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1)) * Matrix4.CreateTranslation(transformation.ExtractTranslation());
             }
+
+
             tunnel.Draw();
 
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
@@ -413,15 +418,15 @@ namespace Mugo
 
             fogBackground.Draw ();
 
-            ShadowMapping.Init(2048, 20, 20);
+
 
 			GL.BlendColor (Color.Black);
 			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);
 
             SwapBuffers();
-		}
-        
-		[STAThread]
+        }
+
+        [STAThread]
 		public static void Main(String[] args)
 		{
 			CommandLine.Parser.Default.ParseArgumentsStrict (args, options);

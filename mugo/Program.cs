@@ -77,7 +77,7 @@ namespace Mugo
 		private int distanceCounter;
 
 		public MugoGame()
-			: base(2560, 1440, new GraphicsMode(32, 24, 8, 2), "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
+			: base(800, 600, new GraphicsMode(32, 24, 8, 2), "", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
 		{
 		}
 
@@ -86,7 +86,9 @@ namespace Mugo
 			base.OnLoad(e);
 
 			Camera.Init();
-			Camera.SetWidthHeightFov(800, 600, currentFov);
+            WindowState = WindowState.Fullscreen;
+            Camera.SetWidthHeightFov(Width, Height, currentFov);
+            
 
             player = new PlayerModel();
 

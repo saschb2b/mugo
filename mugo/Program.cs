@@ -55,6 +55,7 @@ namespace Mugo
         private float xMover = 0.0f;
         private float xMoverAppr = 0.0f;
         private float yMover = 0.0f;
+        private float yMoverPlayer = 0.0f;
         private float yMoverVelocity = 0.0f;
         private float yMoverAppr = 0.0f;
 
@@ -210,6 +211,14 @@ namespace Mugo
                     yMoverVelocity = 10f;
                 }
             }
+            else if (KeyWasPressed(Key.Down) || KeyWasPressed(Key.S))
+            {
+                if (yMoverAppr == 0f)
+                {
+                    yMoverPlayer = -1.5f;
+                    yMoverVelocity = 10f;
+                }
+            }
 
             if (KeyWasPressed(Key.M))
 			{
@@ -309,7 +318,29 @@ namespace Mugo
                     cartLandingSound.Play();
                 }
             }
-          
+
+
+
+            float yPlayerMoverStep = yMoverPlayer / yMoverVelocity;
+            if (Math.Abs(yMoverAppr - yMoverPlayer * 2) > 0.01f)
+            {
+                yMoverAppr += yPlayerMoverStep;
+
+                if (yMoverAppr > yMoverPlayer - 0.01f)
+                {
+                    player.Transformation *= Matrix4.CreateTranslation(0, yPlayerMoverStep, 0);
+                }
+                else
+                {
+                    player.Transformation *= Matrix4.CreateTranslation(0, yPlayerMoverStep * -1f, 0);
+                }
+                if (Math.Abs(yMoverAppr - yMoverPlayer * 2) < 0.01f)
+                {
+                    yMoverAppr = 0.0f;
+                    yMoverPlayer = 0.0f;
+                }
+            }
+
             zMover -= step;
 
             Camera.SetLookAt(new Vector3(3f, 2.0f, 3.0f + zMover), new Vector3(3f + xMoverAppr, 0.5f, -5 + zMover), new Vector3(0, 1, 0));

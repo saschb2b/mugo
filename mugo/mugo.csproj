@@ -85,7 +85,7 @@
     <Content Include="data\objects\Pizza.model">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="data\objects\woodplank.obj">
+    <None Include="data\objects\woodplank.model">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

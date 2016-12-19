@@ -209,7 +209,7 @@ namespace Mugo
             {
                 if (yMoverAppr == 0f)
                 {
-                    yMover = 1.5f;
+                    yMover = 1.7f;
                     yMoverVelocity = 10f;
                 }
             }
@@ -371,8 +371,11 @@ namespace Mugo
                         pizzaCounter++;
                     }
                     else if (element is RockModel) {
-                        Exit();
-					}
+                        if (Math.Abs(player.Transformation.ExtractTranslation().Y - element.Transformation.ExtractTranslation().Y) >= element.Radius / 2)
+                        {
+                            Exit();
+                        }
+                    }
                     else if (element is PlankModel)
                     {
                         if (Math.Abs(player.Transformation.ExtractTranslation().Y + 0.8f - element.Transformation.ExtractTranslation().Y) <= 0 )
@@ -392,7 +395,7 @@ namespace Mugo
 			ITunnelSegementElementModel nextObstacle;
 
 			if (random.Next (2) != 0) {
-				nextObstacle = new PlankModel();
+				nextObstacle = new RockModel();
 			} else if(random.Next (3) != 0 && (obstaclePosition == 0 || obstaclePosition == TunnelSegmentConfig.RailCount-1))
             {
                 nextObstacle = new PlankModel();

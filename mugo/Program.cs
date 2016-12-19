@@ -233,8 +233,6 @@ namespace Mugo
 				}
 			}
 
-
-
             if (KeyWasPressed(Key.Space))
             {
                 speedUnlocked = !speedUnlocked;
@@ -320,8 +318,6 @@ namespace Mugo
                 }
             }
 
-
-
             float yPlayerMoverStep = yMoverPlayer / yMoverVelocity;
             if (Math.Abs(yMoverAppr - yMoverPlayer * 2) > 0.01f)
             {
@@ -350,11 +346,8 @@ namespace Mugo
 
             player.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
             cart.Transformation *= Matrix4.CreateTranslation(0, 0, -step);
+			fogBackground.Transformation = Matrix4.CreateTranslation (0, 0, Camera.Position.Z - (Camera.FogEnd - 10));
 
-			Camera.FogStart += step;
-			Camera.FogEnd += step;
-
-			fogBackground.Transformation = fogBackground.Transformation.ClearTranslation() * Matrix4.CreateTranslation (0, 0, -(Camera.FogEnd - 5));
 			CreateHud ();
         }
 
@@ -415,6 +408,7 @@ namespace Mugo
 		private void InitFog ()
 		{
 			Camera.SetupFog (tunnel.Length - 60f, tunnel.Length - 15f, new Vector3 (0.1f, 0.1f, 0.1f));
+			fogBackground.Transformation = fogBackground.Transformation.ClearTranslation () * Matrix4.CreateTranslation (0, 0, -(Camera.FogEnd - 25));
 		}
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -446,16 +440,12 @@ namespace Mugo
                 pizza.Transformation = transformation.ClearTranslation() * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1)) * Matrix4.CreateTranslation(transformation.ExtractTranslation());
             }
 
-
             tunnel.Draw();
 
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 
-
             fogBackground.Draw ();
-
-
 
 			GL.BlendColor (Color.Black);
 			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);

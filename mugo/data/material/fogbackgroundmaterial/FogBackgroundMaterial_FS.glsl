@@ -60,7 +60,7 @@ void main()
 	// obere Zeile surfaceColor ausgeklammert
 	outputColor = surfaceColor * (light_ambient_color +  brightness * light_diffuse_color) + specularIntensity * light_specular_color;
 
-	float fogFactor = (fogEnd - distance(viewPosition.xyz, cam_sub_position)) / (fogEnd - fogStart);
+	float fogFactor = (fogEnd - length(viewPosition.xyz)) / (fogEnd - fogStart);
 	fogFactor = clamp(fogFactor, 0, 1);
 	outputColor = fogFactor * outputColor + ((1 - fogFactor) * vec4(fogColor, 1));
 }

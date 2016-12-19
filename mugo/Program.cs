@@ -378,7 +378,7 @@ namespace Mugo
                     }
                     else if (element is PlankModel)
                     {
-                        if (Math.Abs(player.Transformation.ExtractTranslation().Y + 0.8f - element.Transformation.ExtractTranslation().Y) <= 0 )
+                        if (Math.Abs(player.Transformation.ExtractTranslation().Y - element.Transformation.ExtractTranslation().Y) <= 1f)
                         {
                             Exit();
                         }

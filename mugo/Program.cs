@@ -101,6 +101,7 @@ namespace Mugo
 			fogBackground = new FogBackground (TunnelSegmentConfig.Width, TunnelSegmentConfig.Height);
 
 			RockModel.Init ();
+            PlankModel.Init();
 			PizzaModel.Init ();
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
@@ -377,7 +378,7 @@ namespace Mugo
 
                         pizzaCounter++;
                     }
-                    else if (element is RockModel) {
+                    else if (element is RockModel || element is PlankModel) {
 						Exit ();
 					}
 				}
@@ -393,7 +394,10 @@ namespace Mugo
 
 			if (random.Next (2) != 0) {
 				nextObstacle = new RockModel ();
-			}
+			} else if(random.Next (3) != 0 && (obstaclePosition == 0 || obstaclePosition == TunnelSegmentConfig.RailCount-1))
+            {
+                nextObstacle = new PlankModel();
+            }
 			else {
 				nextObstacle = new PizzaModel ();
 			}

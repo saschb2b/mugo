@@ -27,6 +27,7 @@ using OpenTK.Input;
 using System.Drawing;
 using Engine.cgimin.material.castshadow;
 using Engine.cgimin.shadowmapping;
+using Engine.cgimin.shadowmappingcascaded;
 
 #endregion --- Using Directives ---
 
@@ -130,7 +131,7 @@ namespace Mugo
 			distanceCounter = 0;
 			CreateHud ();
 			InitFog ();
-            ShadowMapping.Init(2048, 50, 50);
+            ShadowMappingCascaded.Init(2048, 2048, 1024, 8, 40, 100, 30);
 
             Camera.SetLookAt(new Vector3(3f, 0.5f, 1.5f), new Vector3(3f, 0.5f, -10), new Vector3(0, 1, 0));
 		}
@@ -387,15 +388,20 @@ namespace Mugo
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+			ShadowMappingCascaded.StartShadowMapping ();
+            for (int i = 0; i < 3; i++) {
+				ShadowMappingCascaded.SetDepthTextureTarget (i);
+				castShadowMaterial.Draw (cart);
+				castShadowMaterial.Draw (player);
 
-            ShadowMapping.StartShadowMapping();
-            castShadowMaterial.Draw(cart);
-            castShadowMaterial.Draw(player);
-            ShadowMapping.EndShadowMapping();
+				foreach (var item in tunnel.Segements.SelectMany (s => s.Elements.Values)) {
+					castShadowMaterial.Draw (item.BaseObject);
+				}
+			}
+			ShadowMappingCascaded.EndShadowMapping ();
 
-            GL.Clear(ClearBufferMask.ColorBufferBit |
+			GL.Clear (ClearBufferMask.ColorBufferBit |
 				ClearBufferMask.DepthBufferBit);
-
 
             var pizzas =
                 from segment in tunnel.Segements

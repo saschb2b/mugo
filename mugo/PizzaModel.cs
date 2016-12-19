@@ -3,13 +3,15 @@ using Engine.cgimin.material.simpletexture;
 using Engine.cgimin.object3d;
 using Engine.cgimin.texture;
 using OpenTK;
-using Engine.cgimin.material.normalmappingfog;
+using Engine.cgimin.material.normalmappingfogshadowcascaded;
 
 namespace Mugo
 {
 	class PizzaModel : ClonedObject<PizzaModelInternal>, ITunnelSegementElementModel
 	{
-		private static readonly NormalMappingMaterialFog material = new NormalMappingMaterialFog();
+		private static readonly NormalMappingMaterialFogShadowCascaded material = new NormalMappingMaterialFogShadowCascaded();
+
+		public BaseObject3D BaseObject => internalObject;
 
 		public float Radius => radius;
 

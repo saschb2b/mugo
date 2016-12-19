@@ -218,7 +218,7 @@ namespace Mugo
                 if (yMoverAppr == 0f)
                 {
                     yMoverPlayer = -1.5f;
-                    yMoverVelocity = 10f;
+                    yMoverVelocity = 20f;
                 }
             }
 
@@ -363,18 +363,24 @@ namespace Mugo
 
 			if (tunnel.CurrentSegment.Elements.TryGetValue (playerLaneIndex, out element)) {
 				if (Math.Abs (player.Transformation.ExtractTranslation ().Z - element.Transformation.ExtractTranslation ().Z) <= element.Radius) {
-					tunnel.CurrentSegment.SetElementAtPosition (playerLaneIndex, null);
-
 					if (element is PizzaModel)
                     {
+                        tunnel.CurrentSegment.SetElementAtPosition(playerLaneIndex, null);
                         pizzaCollectSound.Play();
 
                         pizzaCounter++;
                     }
-                    else if (element is RockModel || element is PlankModel) {
-						Exit ();
+                    else if (element is RockModel) {
+                        Exit();
 					}
-				}
+                    else if (element is PlankModel)
+                    {
+                        if (Math.Abs(player.Transformation.ExtractTranslation().Y + 0.8f - element.Transformation.ExtractTranslation().Y) <= 0 )
+                        {
+                            Exit();
+                        }
+                    }
+                }
 			}
 		}
 
@@ -386,7 +392,7 @@ namespace Mugo
 			ITunnelSegementElementModel nextObstacle;
 
 			if (random.Next (2) != 0) {
-				nextObstacle = new RockModel ();
+				nextObstacle = new PlankModel();
 			} else if(random.Next (3) != 0 && (obstaclePosition == 0 || obstaclePosition == TunnelSegmentConfig.RailCount-1))
             {
                 nextObstacle = new PlankModel();

@@ -28,7 +28,7 @@ namespace Mugo
 
 	internal class PlankModelInternal : ObjLoaderObject3D
 	{
-		private const String objFilePath = "data/objects/woodplank.obj";
+		private const String objFilePath = "data/objects/woodplank.model";
 		private const String texturePath = "data/textures/Textura_tabla_2.jpg";
 
 		public PlankModelInternal() : base (objFilePath, scaleFactor: 0.3f)

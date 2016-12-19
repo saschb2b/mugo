@@ -11,7 +11,7 @@ namespace Mugo
 	{
 		private static readonly NormalMappingMaterialFogShadowCascaded material = new NormalMappingMaterialFogShadowCascaded();
 
-		public BaseObject3D BaseObject => internalObject;
+		public BaseObject3D BaseObject => this;
 
 		public float Radius => radius;
 

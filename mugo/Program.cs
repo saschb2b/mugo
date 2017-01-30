@@ -61,9 +61,7 @@ namespace Mugo
         private float yMoverAppr = 0.0f;
 
         private float step = 0.1f;
-        private float fov = 60;
         private float currentFov = 60;
-        private float fovIncrement = 1.01f;
 
 		private int playerLaneIndex = 1;
 
@@ -100,9 +98,9 @@ namespace Mugo
 
 			fogBackground = new FogBackground (TunnelSegmentConfig.Width, TunnelSegmentConfig.Height);
 
-			RockModel.Init ();
+			RockModel.Init();
             PlankModel.Init();
-			PizzaModel.Init ();
+			PizzaModel.Init();
 
 			simpleTextureMaterial = new SimpleTextureMaterial();
             normalMappingMaterial = new NormalMappingMaterial();
@@ -118,7 +116,8 @@ namespace Mugo
 			Sound.Init();
 			backgroundMusic = new Sound("data/audio/background.wav", looping: true);
 			backgroundMusic.Gain = 0.5f;
-			if (!options.NoBackgroundMusic) {
+			if (!options.NoBackgroundMusic)
+            {
 				backgroundMusic.Play ();
 			}
 
@@ -256,19 +255,9 @@ namespace Mugo
                     step *= 1.05f;
                 }
 
-                GenerateNextTunnelSegment ();
-                if(fov < 100)
-                {
-                    fov += 2;
-                }
+                GenerateNextTunnelSegment();
 
 				distanceCounter++;
-            }
-
-            if(currentFov < fov)
-            {
-                currentFov *= fovIncrement;
-               // Camera.SetWidthHeightFov(800, 600, currentFov);
             }
 
             const float xMoverStep = 1f/3;
@@ -332,6 +321,7 @@ namespace Mugo
                 {
                     player.Transformation *= Matrix4.CreateTranslation(0, yPlayerMoverStep * -1f, 0);
                 }
+
                 if (Math.Abs(yMoverAppr - yMoverPlayer * 2) < 0.01f)
                 {
                     yMoverAppr = 0.0f;
@@ -361,8 +351,10 @@ namespace Mugo
 		{
 			ITunnelSegementElementModel element;
 
-			if (tunnel.CurrentSegment.Elements.TryGetValue (playerLaneIndex, out element)) {
-				if (Math.Abs (player.Transformation.ExtractTranslation ().Z - element.Transformation.ExtractTranslation ().Z) <= element.Radius) {
+			if (tunnel.CurrentSegment.Elements.TryGetValue (playerLaneIndex, out element))
+            {
+				if (Math.Abs (player.Transformation.ExtractTranslation ().Z - element.Transformation.ExtractTranslation ().Z) <= element.Radius)
+                {
 					if (element is PizzaModel)
                     {
                         tunnel.CurrentSegment.SetElementAtPosition(playerLaneIndex, null);
@@ -370,8 +362,9 @@ namespace Mugo
 
                         pizzaCounter++;
                     }
-                    else if (element is RockModel) {
-                        if (Math.Abs(player.Transformation.ExtractTranslation().Y - element.Transformation.ExtractTranslation().Y) >= element.Radius / 2)
+                    else if (element is RockModel)
+                    {
+                        if (Math.Abs(player.Transformation.ExtractTranslation().Y - element.Transformation.ExtractTranslation().Y) >= element.Radius / 2) 
                         {
                             Exit();
                         }
@@ -396,11 +389,13 @@ namespace Mugo
 
 			if (random.Next (2) != 0) {
 				nextObstacle = new RockModel();
-			} else if(random.Next (3) != 0 && (obstaclePosition == 0 || obstaclePosition == TunnelSegmentConfig.RailCount-1))
+			}
+            else if(random.Next (3) != 0 && (obstaclePosition == 0 || obstaclePosition == TunnelSegmentConfig.RailCount-1))
             {
                 nextObstacle = new PlankModel();
             }
-			else {
+			else
+            {
 				nextObstacle = new PizzaModel ();
 			}
 
@@ -413,9 +408,9 @@ namespace Mugo
 			const float scale = 0.055f;
 
 			pizzaCounterString?.UnLoad ();
-			pizzaCounterString = new DrawableString (String.Format (hudInformationFormat, (int)(step * 100), distanceCounter, pizzaCounter));
-			pizzaCounterString.Transformation *= Matrix4.CreateScale (scale);
-			pizzaCounterString.Transformation *= Matrix4.CreateTranslation (-1f, 1f - scale, 0);
+			pizzaCounterString = new DrawableString(String.Format(hudInformationFormat, (int)(step * 100), distanceCounter, pizzaCounter));
+			pizzaCounterString.Transformation *= Matrix4.CreateScale(scale);
+			pizzaCounterString.Transformation *= Matrix4.CreateTranslation(-1f, 1f - scale, 0);
 		}
 
 		private void InitFog ()
@@ -429,11 +424,11 @@ namespace Mugo
 			ShadowMappingCascaded.StartShadowMapping ();
             for (int i = 0; i < 3; i++) {
 				ShadowMappingCascaded.SetDepthTextureTarget (i);
-				castShadowMaterial.Draw (cart);
-				castShadowMaterial.Draw (player);
+				castShadowMaterial.Draw(cart);
+				castShadowMaterial.Draw(player);
 
 				foreach (var item in tunnel.Segements.SelectMany (s => s.Elements.Values)) {
-					castShadowMaterial.Draw (item.BaseObject);
+					castShadowMaterial.Draw(item.BaseObject);
 				}
 			}
 			ShadowMappingCascaded.EndShadowMapping ();
@@ -450,7 +445,8 @@ namespace Mugo
             foreach (var pizza in pizzas)
             {
                 var transformation = pizza.Transformation;
-                pizza.Transformation = transformation.ClearTranslation() * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1)) * Matrix4.CreateTranslation(transformation.ExtractTranslation());
+                var rotationY = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(1));
+                pizza.Transformation = transformation.ClearTranslation() * rotationY * Matrix4.CreateTranslation(transformation.ExtractTranslation());
             }
 
             tunnel.Draw();
@@ -458,9 +454,9 @@ namespace Mugo
             normalMappingMaterial.Draw(player, player.TextureId, player.normalTextureId, 1.0f);
             simpleTextureMaterial.Draw(cart, cart.TextureId);
 
-            fogBackground.Draw ();
+            fogBackground.Draw();
 
-			GL.BlendColor (Color.Black);
+			GL.BlendColor(Color.Black);
 			pizzaCounterString.Draw(blendDest: BlendingFactorDest.ConstantColor);
 
             SwapBuffers();
@@ -469,13 +465,15 @@ namespace Mugo
         [STAThread]
 		public static void Main(String[] args)
 		{
-			CommandLine.Parser.Default.ParseArgumentsStrict (args, options);
+			CommandLine.Parser.Default.ParseArgumentsStrict(args, options);
 
-			if (options.Seed.HasValue) {
-				random = new Random (options.Seed.Value);
+			if (options.Seed.HasValue)
+            {
+				random = new Random(options.Seed.Value);
 			} 
-			else {
-				random = new Random ();
+			else
+            {
+				random = new Random();
 			}
 
 			using (MugoGame example = new MugoGame()) {
